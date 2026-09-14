@@ -1,5 +1,14 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Neumorphism (Soft UI) design system — single source of truth.
+ *
+ * The palette is deliberately monochromatic: depth comes from opposed
+ * light/dark shadows, never from colour variety or borders.
+ * Shadow recipes live in `app/globals.css` as semantic `shadow-neu-*`
+ * utilities so components stay readable instead of carrying huge
+ * arbitrary-value strings.
+ */
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,64 +19,64 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // dope.security — Midnight terminal with violet beacons
-        "near-black": "#090909",       // page canvas
-        "almost-white": "#f7f9fa",     // primary text
-        "soft-white": "#f0f0f0",       // section labels
-        steel: "#828384",              // muted secondary text
-        graphite: "#474747",           // card text / dividers
-        iron: "#423738",               // dark borders / separators
-        ash: "#6b6b6b",                // nav borders, helper text
-        "signal-violet": "#af50ff",   // THE only chromatic accent
-        "lavender-mist": "#e1bdff",   // soft violet tint
-        // Legacy aliases (kept for components not yet reskinned)
-        obsidian: "#090909",
-        abyss: "#0d0d0d",
-        fog: "#6b6b6b",
-        cloud: "#f0f0f0",
-        pure: "#f7f9fa",
-        void: "#000000",
-        silver: "#828384",
-        ash2: "#6b6b6b",
-        iris: {
-          DEFAULT: "#af50ff",
-          pale: "#e1bdff",
-          deep: "#7b2fd6",
-        },
-        cyan: {
-          signal: "#af50ff", // map to violet in new palette
-        },
-        orchid: {
-          bloom: "#e1bdff",
-        },
-        periwinkle: "#e1bdff",
+        // ─── Cool-grey surface ──────────────────────────────────────────
+        // Everything is "moulded" from this one base colour.
+        "neu-base": "#E0E5EC", // page canvas + every card surface
+        "neu-fg": "#3D4852", // primary text — 7.5:1 contrast (WCAG AAA)
+        "neu-muted": "#6B7280", // secondary text — 4.6:1 contrast (WCAG AA)
+        "neu-placeholder": "#A0AEC0", // input placeholders only — never body text
+        "neu-shadow-dark": "#A3B1C6", // dark shadow tone (always applied via rgb())
+
+        // ─── Accents (used sparingly) ───────────────────────────────────
+        "neu-accent": "#6C63FF", // primary interactive violet
+        "neu-accent-light": "#8B84FF", // gradients + hover states
+        "neu-accent-deep": "#4C46CC", // pressed accent
+        "neu-teal": "#38B2AC", // success / positive indicators
+        "neu-danger": "#E5484D", // destructive actions
       },
       borderRadius: {
-        button: "8px",
-        input: "8px",
-        nav: "8px",
-        card: "19.2px",
-        feature: "19.2px",
-        pill: "1584px",
+        // Containers are heavily pillowed; nothing is sharp.
+        card: "32px",
+        feature: "32px",
+        button: "16px",
+        input: "16px",
+        well: "20px",
+        nav: "12px",
+        pill: "9999px",
       },
       fontFamily: {
-        // Noto Sans Thai — primary for ALL Thai & body text
-        display: ["var(--font-lora)", "Georgia", "serif"],
-        ui: ["var(--font-noto)", "Inter", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
-        // aliases
-        sans: ["var(--font-noto)", "Inter", "system-ui", "sans-serif"],
-        serif: ["var(--font-lora)", "Georgia", "serif"],
+        // Display: Plus Jakarta Sans (Latin headings)
+        display: ["var(--font-display)", "Plus Jakarta Sans", "system-ui", "sans-serif"],
+        // UI: DM Sans (Latin body) with Noto Sans Thai behind it, because
+        // DM Sans ships no Thai glyphs and virtually all copy here is Thai.
+        ui: ["var(--font-ui)", "var(--font-thai)", "DM Sans", "Noto Sans Thai", "system-ui", "sans-serif"],
+        sans: ["var(--font-ui)", "var(--font-thai)", "DM Sans", "Noto Sans Thai", "system-ui", "sans-serif"],
+        // Numeric: tabular figures keep damage columns aligned.
+        mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "monospace"],
       },
       maxWidth: {
         content: "1200px",
       },
-      spacing: {
-        section: "120px",
-        card: "40px",
+      keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(6px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
       },
-      backdropBlur: {
-        nav: "10px",
+      animation: {
+        float: "float 3s ease-in-out infinite",
+        "fade-in": "fade-in 300ms ease-out both",
+      },
+      transitionTimingFunction: {
+        out: "cubic-bezier(0, 0, 0.2, 1)",
+      },
+      transitionDuration: {
+        "300": "300ms",
+        "500": "500ms",
       },
     },
   },
@@ -75,4 +84,3 @@ const config: Config = {
 };
 
 export default config;
-

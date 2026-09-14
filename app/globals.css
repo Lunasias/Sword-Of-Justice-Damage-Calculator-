@@ -2,58 +2,200 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Neumorphism (Soft UI) — design tokens ────────────────────────────────
+   One cool-grey base surface; every edge is defined by opposed shadows
+   (light from top-left, dark falling bottom-right) rather than borders.
+   ──────────────────────────────────────────────────────────────────────── */
 :root {
-  /* Font CSS vars populated by next/font/google in layout.tsx */
-  --font-noto: 'Noto Sans Thai', system-ui, sans-serif;
-  --font-lora: Georgia, serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Surface + ink */
+  --neu-base: #e0e5ec;
+  --neu-fg: #3d4852;
+  --neu-muted: #6b7280;
+  --neu-placeholder: #a0aec0;
 
-  /* dope.security design tokens */
-  --color-canvas: #090909;
-  --color-text: #f7f9fa;
-  --color-muted: #828384;
-  --color-border: #6b6b6b;
-  --color-card-border: rgba(247, 249, 250, 0.12);
-  --color-accent: #af50ff;
-  --color-accent-soft: #e1bdff;
+  /* Accents */
+  --neu-accent: #6c63ff;
+  --neu-accent-light: #8b84ff;
+  --neu-accent-deep: #4c46cc;
+  --neu-teal: #38b2ac;
+
+  /* Shadow pigments — kept as raw channels so the alpha recipe lives in one
+     place and shadows always blend with the surface instead of banding. */
+  --neu-shadow-dark: 163 177 198;
+  --neu-shadow-light: 255 255 255;
+
+  /* Font CSS vars — populated by next/font/google in app/layout.tsx */
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-ui: "DM Sans", system-ui, sans-serif;
+  --font-thai: "Noto Sans Thai", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #090909;
-  color: #f7f9fa;
-  font-family: var(--font-noto), 'Noto Sans Thai', system-ui, sans-serif;
+  background-color: var(--neu-base);
+  color: var(--neu-fg);
+  /* DM Sans first for Latin; Noto Sans Thai carries every Thai glyph. */
+  font-family: var(--font-ui), var(--font-thai), "DM Sans", "Noto Sans Thai", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-/* Custom restrained scrollbars */
+/* Headings default to the display face with tightened tracking. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), var(--font-thai), "Plus Jakarta Sans", "Noto Sans Thai", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Shadow physics ──────────────────────────────────────────────────────
+   Semantic depth utilities. Components compose these rather than repeating
+   raw box-shadow values, which keeps the lighting model consistent globally.
+   ──────────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Extruded — default resting state: the element rises from the surface. */
+  .shadow-neu-extruded {
+    box-shadow: 9px 9px 16px rgb(var(--neu-shadow-dark) / 0.6),
+      -9px -9px 16px rgb(var(--neu-shadow-light) / 0.5);
+  }
+
+  /* Extruded Hover — lifted, as if picked up slightly. */
+  .shadow-neu-lifted {
+    box-shadow: 12px 12px 20px rgb(var(--neu-shadow-dark) / 0.7),
+      -12px -12px 20px rgb(var(--neu-shadow-light) / 0.6);
+  }
+
+  /* Extruded Small — for compact elements (chips, icon buttons, tiles). */
+  .shadow-neu-sm {
+    box-shadow: 5px 5px 10px rgb(var(--neu-shadow-dark) / 0.6),
+      -5px -5px 10px rgb(var(--neu-shadow-light) / 0.5);
+  }
+
+  /* Inset — shallow well: pressed states and recessed panels. */
+  .shadow-neu-inset {
+    box-shadow: inset 6px 6px 10px rgb(var(--neu-shadow-dark) / 0.6),
+      inset -6px -6px 10px rgb(var(--neu-shadow-light) / 0.5);
+  }
+
+  /* Inset Deep — carved wells: inputs, icon wells, active surfaces. */
+  .shadow-neu-inset-deep {
+    box-shadow: inset 10px 10px 20px rgb(var(--neu-shadow-dark) / 0.7),
+      inset -10px -10px 20px rgb(var(--neu-shadow-light) / 0.6);
+  }
+
+  /* Inset Small — subtle tracks, dividers, pills. */
+  .shadow-neu-inset-sm {
+    box-shadow: inset 3px 3px 6px rgb(var(--neu-shadow-dark) / 0.6),
+      inset -3px -3px 6px rgb(var(--neu-shadow-light) / 0.5);
+  }
+
+  /* Pressed state for elements sitting on the accent colour: white highlights
+     read as glare on violet, so the shadow is darkened instead. */
+  .shadow-neu-pressed-accent {
+    box-shadow: inset 4px 4px 8px rgb(61 72 82 / 0.35),
+      inset -4px -4px 8px rgb(255 255 255 / 0.18);
+  }
+
+  /* Focus ring token — mandatory on every interactive element. */
+  .focus-neu {
+    outline: none;
+  }
+  .focus-neu:focus-visible {
+    box-shadow: 0 0 0 2px var(--neu-base), 0 0 0 4px var(--neu-accent);
+  }
+
+  /* Input focus: the well must stay carved while the ring appears, so both
+     shadow layers are declared together instead of overriding each other. */
+  .focus-neu-inset {
+    outline: none;
+  }
+  .focus-neu-inset:hover {
+    box-shadow: inset 8px 8px 14px rgb(var(--neu-shadow-dark) / 0.7),
+      inset -8px -8px 14px rgb(var(--neu-shadow-light) / 0.6);
+  }
+  .focus-neu-inset:focus,
+  .focus-neu-inset:focus-visible {
+    box-shadow: inset 10px 10px 20px rgb(var(--neu-shadow-dark) / 0.7),
+      inset -10px -10px 20px rgb(var(--neu-shadow-light) / 0.6), 0 0 0 2px var(--neu-base),
+      0 0 0 4px var(--neu-accent);
+  }
+
+  /* Soft divider: an inset groove instead of a hard border. */
+  .divide-neu {
+    height: 1px;
+    background: rgb(var(--neu-shadow-dark) / 0.35);
+    box-shadow: 0 1px 0 rgb(var(--neu-shadow-light) / 0.5);
+  }
+
+  /* Tabular figures for all damage/matrix numbers. */
+  .font-numeric {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ─── Scrollbar — recessed into the surface ─────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090909;
+  background: var(--neu-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2e2e2e;
-  border-radius: 3px;
+  background: rgb(var(--neu-shadow-dark) / 0.65);
+  border-radius: 9999px;
+  border: 2px solid var(--neu-base);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #474747;
+  background: rgb(var(--neu-shadow-dark) / 0.9);
 }
 
-/* Chrome, Safari, Edge, Opera number input arrows removal for clean data inputs */
+/* ─── Number input — remove spinners (keys off the inset well instead) ──── */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* ─── Select — custom chevron, de-emphasised to sit inside the well ─────── */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 1.15em;
+  padding-right: 2.75rem;
+}
+
+/* Native option lists are painted by the OS — align them with the surface. */
+option {
+  background-color: var(--neu-base);
+  color: var(--neu-fg);
+}
+
+/* ─── Respect reduced-motion: keep the depth, drop the movement ─────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

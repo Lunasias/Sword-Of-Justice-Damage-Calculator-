@@ -42,25 +42,35 @@ export function Modal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-void/80 backdrop-blur-sm animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center p-4 backdrop-blur-sm"
+      style={{ backgroundColor: "rgb(61 72 82 / 0.35)" }}
+      onClick={onClose}
+    >
       <div
-        className={`relative w-full ${maxWidthStyles[maxWidth]} bg-graphite border border-steel/80 rounded-card shadow-2xl p-6 md:p-8`}
+        /* Raised, not placed: the dialog is moulded from the same surface
+           and simply sits higher than the page. */
+        className={`relative max-h-[90vh] w-full overflow-y-auto ${maxWidthStyles[maxWidth]} rounded-card bg-neu-base p-6 shadow-neu-lifted md:p-8`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 mb-6 border-b border-steel/40">
-          <h2 id="modal-title" className="font-display text-xl text-pure font-light">
+        <div className="mb-6 flex items-center justify-between pb-5">
+          <h2 id="modal-title" className="font-display text-xl font-bold tracking-tight text-neu-fg">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="text-ash hover:text-pure transition-colors p-1 rounded-md hover:bg-steel/40"
+            className="rounded-full bg-neu-base p-2.5 text-neu-muted shadow-neu-extruded transition-all duration-300 ease-out hover:text-neu-fg hover:shadow-neu-lifted active:translate-y-0.5 active:shadow-neu-inset-sm focus-neu"
             aria-label="ปิดหน้าต่าง"
           >
             <X size={18} />
           </button>
         </div>
+
+        {/* Inset groove instead of a hard rule. */}
+        <div className="mb-6 h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.5)]" />
 
         <div>{children}</div>
       </div>

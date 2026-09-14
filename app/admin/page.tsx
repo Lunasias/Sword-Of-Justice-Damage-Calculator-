@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { LoadingState, EmptyState, ErrorState } from "@/components/ui/States";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { useToast } from "@/components/ui/Toast";
 import {
   Shield,
@@ -162,149 +163,156 @@ export default function AdminDashboardPage() {
   );
 
   return (
-    <div className="max-w-content mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-steel/40">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Shield size={20} className="text-iris" />
-            <span className="text-xs font-mono text-iris uppercase tracking-wider">
-              แผงควบคุมระบบ
-            </span>
-          </div>
-          <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-            การจัดการระบบผู้ดูแล
-          </h1>
-          <p className="text-xs sm:text-sm font-ui text-ash mt-1">
-            ตรวจสอบสถิติระบบ บริหารจัดการผู้ใช้งาน และตรวจสอบเนื้อหาตัวละคร
-          </p>
-        </div>
-      </div>
+    <div className="mx-auto max-w-content space-y-10 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="แผงควบคุมระบบ"
+        title="การจัดการระบบผู้ดูแล"
+        description="ตรวจสอบสถิติระบบ บริหารจัดการผู้ใช้งาน และตรวจสอบเนื้อหาตัวละคร"
+      />
 
-      {/* 4 Stats Cards (Section 30) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* จำนวนผู้ใช้ */}
-        <div className="p-5 rounded-card bg-graphite/30 border border-steel/50">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-2">
-            <span>จำนวนผู้ใช้</span>
-            <Users size={16} className="text-iris" />
+      {/* 4 Stats Cards (Section 30) — carved wells, consistent with dashboard */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          {
+            label: "จำนวนผู้ใช้",
+            value: stats?.userCount,
+            note: "บัญชีทั้งหมดในระบบ",
+            icon: <Users size={16} />,
+            accent: "text-neu-accent",
+            valueAccent: "text-neu-fg",
+          },
+          {
+            label: "จำนวนตัวละคร",
+            value: stats?.totalCharacters,
+            note: "บิลด์ที่สร้างทั้งหมด",
+            icon: <Database size={16} />,
+            accent: "text-neu-fg",
+            valueAccent: "text-neu-fg",
+          },
+          {
+            label: "ตัวละครสาธารณะ",
+            value: stats?.publicCharacters,
+            note: "เผยแพร่สู่ชุมชน",
+            icon: <Globe size={16} />,
+            accent: "text-neu-teal",
+            valueAccent: "text-neu-teal",
+          },
+          {
+            label: "ตัวละครส่วนตัว",
+            value: stats?.privateCharacters,
+            note: "ใช้งานส่วนตัว",
+            icon: <Lock size={16} />,
+            accent: "text-neu-muted",
+            valueAccent: "text-neu-fg",
+          },
+        ].map((card) => (
+          <div
+            key={card.label}
+            className="rounded-card bg-neu-base p-5 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep"
+          >
+            <div className="mb-3 flex items-center justify-between gap-2 text-xs font-ui text-neu-muted">
+              <span>{card.label}</span>
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-full bg-neu-base shadow-neu-inset-deep ${card.accent}`}
+              >
+                {card.icon}
+              </span>
+            </div>
+            <div
+              className={`font-numeric text-3xl font-bold tracking-tight ${card.valueAccent}`}
+            >
+              {card.value ?? "-"}
+            </div>
+            <span className="mt-1.5 block text-[10px] font-ui text-neu-muted">{card.note}</span>
           </div>
-          <div className="font-display text-3xl font-light text-pure">
-            {stats?.userCount ?? "-"}
-          </div>
-          <span className="text-[10px] font-mono text-fog mt-1 block">บัญชีทั้งหมดในระบบ</span>
-        </div>
-
-        {/* จำนวนตัวละคร */}
-        <div className="p-5 rounded-card bg-graphite/30 border border-steel/50">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-2">
-            <span>จำนวนตัวละคร</span>
-            <Database size={16} className="text-cloud" />
-          </div>
-          <div className="font-display text-3xl font-light text-pure">
-            {stats?.totalCharacters ?? "-"}
-          </div>
-          <span className="text-[10px] font-mono text-fog mt-1 block">บิลด์ที่สร้างทั้งหมด</span>
-        </div>
-
-        {/* ตัวละครสาธารณะ */}
-        <div className="p-5 rounded-card bg-graphite/30 border border-steel/50">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-2">
-            <span>ตัวละครสาธารณะ</span>
-            <Globe size={16} className="text-cyan-signal" />
-          </div>
-          <div className="font-display text-3xl font-light text-pure text-cyan-signal">
-            {stats?.publicCharacters ?? "-"}
-          </div>
-          <span className="text-[10px] font-mono text-fog mt-1 block">เผยแพร่สู่ชุมชน</span>
-        </div>
-
-        {/* ตัวละครส่วนตัว */}
-        <div className="p-5 rounded-card bg-graphite/30 border border-steel/50">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-2">
-            <span>ตัวละครส่วนตัว</span>
-            <Lock size={16} className="text-ash" />
-          </div>
-          <div className="font-display text-3xl font-light text-pure">
-            {stats?.privateCharacters ?? "-"}
-          </div>
-          <span className="text-[10px] font-mono text-fog mt-1 block">ใช้งานส่วนตัว</span>
-        </div>
+        ))}
       </div>
 
       {/* User Management Section */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-card bg-graphite/20 border border-steel/40">
+      <div className="space-y-6">
+        <div className="flex flex-col items-center justify-between gap-5 rounded-card bg-neu-base p-5 shadow-neu-inset sm:flex-row">
           <div>
-            <h3 className="font-display text-lg text-pure font-light">
+            <h3 className="font-display text-lg font-bold tracking-tight text-neu-fg">
               จัดการผู้ใช้งาน ({filteredUsers.length})
             </h3>
-            <p className="text-xs font-ui text-ash">
+            <p className="mt-0.5 text-xs font-ui text-neu-muted">
               ค้นหา ดูสิทธิ์ และจัดการระงับการใช้งานบัญชีผู้ใช้
             </p>
           </div>
 
-          <div className="relative w-full sm:w-64">
+          <div className="relative w-full shrink-0 sm:w-64">
             <input
               type="text"
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
               placeholder="ค้นหาชื่อหรืออีเมล..."
-              className="w-full h-9 pl-9 pr-3 rounded-input bg-abyss/80 text-pure text-xs font-ui border border-steel/60 focus:border-iris focus:outline-none"
+              aria-label="ค้นหาผู้ใช้"
+              className="h-11 w-full rounded-2xl bg-neu-base pl-11 pr-4 font-ui text-xs text-neu-fg shadow-neu-inset-deep transition-all duration-300 placeholder:text-neu-placeholder focus-neu-inset"
             />
-            <Search size={14} className="absolute left-3 top-2.5 text-fog" />
+            <Search
+              size={15}
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neu-muted"
+            />
           </div>
         </div>
 
-        {/* Users Table */}
-        <div className="overflow-x-auto rounded-card border border-steel/40 bg-graphite/20">
-          <table className="w-full text-left text-xs font-ui">
-            <thead className="bg-abyss/80 text-ash border-b border-steel/40">
-              <tr>
-                <th className="p-3.5">ผู้ใช้</th>
-                <th className="p-3.5">อีเมล</th>
-                <th className="p-3.5">ระดับสิทธิ์</th>
-                <th className="p-3.5">จำนวนบิลด์</th>
-                <th className="p-3.5">สถานะ</th>
-                <th className="p-3.5 text-right">การจัดการ</th>
+        {/* Users Table — carved basin, pressed header, floating rows */}
+        <div className="overflow-x-auto rounded-card bg-neu-base p-3 shadow-neu-inset">
+          <table className="w-full border-separate border-spacing-x-0 border-spacing-y-3 text-left text-xs font-ui">
+            <thead>
+              <tr className="text-neu-muted">
+                <th className="rounded-l-xl bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">
+                  ผู้ใช้
+                </th>
+                <th className="bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">อีเมล</th>
+                <th className="bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">ระดับสิทธิ์</th>
+                <th className="bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">จำนวนบิลด์</th>
+                <th className="bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">สถานะ</th>
+                <th className="rounded-r-xl bg-neu-base px-4 py-3 text-right font-medium shadow-neu-inset-deep">
+                  การจัดการ
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-steel/30">
+            <tbody>
               {filteredUsers.map((u) => (
-                <tr key={u.id} className="hover:bg-steel/20 transition-colors">
-                  <td className="p-3.5 font-medium text-pure">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-steel/50 flex items-center justify-center text-[10px] font-mono">
+                <tr key={u.id} className="group">
+                  <td className="rounded-l-xl bg-neu-base px-4 py-3 font-medium text-neu-fg shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neu-base font-numeric text-[10px] font-semibold text-neu-accent shadow-neu-inset-sm">
                         {u.username[0]?.toUpperCase()}
-                      </div>
+                      </span>
                       <span>{u.username}</span>
                     </div>
                   </td>
-                  <td className="p-3.5 text-ash font-mono">{u.email}</td>
-                  <td className="p-3.5">
+                  <td className="bg-neu-base px-4 py-3 font-numeric text-neu-muted shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
+                    {u.email}
+                  </td>
+                  <td className="bg-neu-base px-4 py-3 shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-medium ${
                         u.role === "ADMIN"
-                          ? "bg-iris/20 text-iris border border-iris/40 font-semibold"
-                          : "bg-steel/30 text-ash"
+                          ? "bg-neu-accent text-white"
+                          : "bg-neu-base text-neu-muted shadow-neu-inset-sm"
                       }`}
                     >
                       {u.role === "ADMIN" ? "แอดมิน" : "ผู้ใช้ทั่วไป"}
                     </span>
                   </td>
-                  <td className="p-3.5 font-mono text-cloud">{u._count?.characters || 0}</td>
-                  <td className="p-3.5">
+                  <td className="bg-neu-base px-4 py-3 font-numeric text-neu-fg shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
+                    {u._count?.characters || 0}
+                  </td>
+                  <td className="bg-neu-base px-4 py-3 shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
                     {u.isSuspended ? (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-red-500/20 text-red-400 border border-red-500/30">
+                      <span className="rounded-full bg-neu-base px-2.5 py-1 text-[10px] font-medium text-neu-danger shadow-neu-inset-sm">
                         ถูกระงับ
                       </span>
                     ) : (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-400">
+                      <span className="rounded-full bg-neu-base px-2.5 py-1 text-[10px] font-medium text-neu-teal shadow-neu-inset-sm">
                         ปกติ
                       </span>
                     )}
                   </td>
-                  <td className="p-3.5 text-right">
+                  <td className="rounded-r-xl bg-neu-base px-4 py-3 text-right shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
                     <div className="flex items-center justify-end gap-2">
                       {u.id !== user.id && (
                         <>
@@ -312,22 +320,23 @@ export default function AdminDashboardPage() {
                             size="sm"
                             variant={u.isSuspended ? "secondary" : "danger"}
                             onClick={() => handleToggleSuspend(u)}
-                            className="h-7 px-2.5 text-[11px]"
+                            className="px-3 text-[11px]"
                           >
                             {u.isSuspended ? "ปลดระงับ" : "ระงับผู้ใช้"}
                           </Button>
                           <button
                             type="button"
                             onClick={() => setUserToDelete(u)}
-                            className="p-1.5 text-ash hover:text-red-400 rounded hover:bg-red-500/10 transition-colors"
+                            className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-muted shadow-neu-sm transition-all duration-300 ease-out hover:text-neu-danger hover:shadow-neu-extruded active:translate-y-0.5 active:shadow-neu-inset-sm focus-neu"
                             title="ลบผู้ใช้"
+                            aria-label="ลบผู้ใช้"
                           >
                             <Trash2 size={14} />
                           </button>
                         </>
                       )}
                       {u.id === user.id && (
-                        <span className="text-[11px] text-fog font-mono">บัญชีปัจจุบัน</span>
+                        <span className="font-numeric text-[11px] text-neu-muted">บัญชีปัจจุบัน</span>
                       )}
                     </div>
                   </td>
@@ -346,14 +355,14 @@ export default function AdminDashboardPage() {
         maxWidth="sm"
       >
         <div className="space-y-4">
-          <p className="text-xs font-ui text-ash leading-relaxed">
+          <p className="text-xs font-ui leading-relaxed text-neu-muted">
             คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้{" "}
-            <span className="text-pure font-semibold font-mono">
+            <span className="font-numeric font-semibold text-neu-fg">
               {userToDelete?.username}
             </span>
             ? บิลด์ตัวละครทั้งหมดของผู้ใช้นี้จะถูกลบออกจากระบบด้วย
           </p>
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-steel/30">
+          <div className="flex items-center justify-end gap-3 pt-3">
             <Button
               type="button"
               variant="ghost"

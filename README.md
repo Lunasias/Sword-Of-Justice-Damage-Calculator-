@@ -34,10 +34,40 @@
    - ตรวจสอบสถิติระบบ: จำนวนผู้ใช้, จำนวนตัวละครทั้งหมด, บิลด์สาธารณะ และบิลด์ส่วนตัว
    - ระงับ / ปลดระงับบัญชีผู้ใช้
    - ลบบัญชีผู้ใช้และจัดการเนื้อหาตัวละครที่ไม่เหมาะสม
-6. **การออกแบบและคำศัพท์ภาษาไทยมาตรฐาน (Editorial Design & Terminology)**:
-   - ยึดตามมาตรฐาน Origin Financial Design System: Obsidian `#0f1011`, Abyss `#090a0b`, Graphite `#2e2e2e`, Steel `#3f4041`
-   - การแสดงผลตัวเลขดาเมจขนาดใหญ่ด้วย Editorial Serif และ Roboto Mono
+6. **การออกแบบและคำศัพท์ภาษาไทยมาตรฐาน (Neumorphism / Soft UI & Terminology)**:
+   - ยึดตามระบบ Neumorphism (Soft UI) บนพื้นผิวสีเทาเย็น `#E0E5EC` เพียงสีเดียว
+   - ความลึกทั้งหมดเกิดจากเงาคู่ที่ตรงข้ามกัน (แสงจากซ้ายบน / เงาตกขวาล่าง) แทนการใช้เส้นขอบ
+   - ตัวอักษรหลัก `#3D4852` (คอนทราสต์ 7.5:1) และตัวอักษรรอง `#6B7280` (4.6:1) ผ่านมาตรฐาน WCAG AA
+   - ใช้สีม่วง `#6C63FF` เฉพาะจุดที่ต้องเน้น (CTA, focus ring) อย่างจำกัด
    - การใช้คำศัพท์ภาษาไทยที่ถูกต้องและเคร่งครัดตามข้อกำหนด
+
+---
+
+## ระบบดีไซน์ (Neumorphism Design System)
+
+ดีไซน์ทั้งหมดรวมศูนย์อยู่ที่ 3 จุด ไม่กระจายอยู่ในคอมโพเนนต์
+
+| ไฟล์ | หน้าที่ |
+|---|---|
+| `tailwind.config.ts` | นิยามโทเคนสี รัศมีมุม และฟอนต์ (แหล่งความจริงเพียงหนึ่งเดียว) |
+| `app/globals.css` | สูตรเงาทั้ง 6 ระดับ, สีพื้นผิว, focus ring, scrollbar |
+| `components/ui/*` | คอมโพเนนต์พื้นฐาน (Button, Card, InputField, Modal, Toast, States, PageHeader) |
+
+**สูตรเงา (Shadow Physics)** — อ้างอิงผ่านคลาสเชิงความหมาย ไม่เขียนค่าซ้ำในคอมโพเนนต์
+
+| คลาส | ใช้กับ |
+|---|---|
+| `shadow-neu-extruded` | สถานะพักของทุกการ์ด/ปุ่ม |
+| `shadow-neu-lifted` | สถานะ hover (ยกขึ้น) |
+| `shadow-neu-sm` | องค์ประกอบขนาดเล็ก (chip, ไอคอน, แถวตาราง) |
+| `shadow-neu-inset` | แผงที่ถูกกดลง (empty state, แถบสรุป) |
+| `shadow-neu-inset-deep` | บ่อน้ำลึก (input, icon well, ตัวเลขหลัก) |
+| `shadow-neu-inset-sm` | ร่องตื้น (divider, pill, ป้ายสถานะ) |
+
+**หมายเหตุเรื่องฟอนต์**: ระบบดีไซน์กำหนด Plus Jakarta Sans (หัวเรื่อง) และ DM Sans (เนื้อหา)
+แต่ทั้งสองฟอนต์ **ไม่มีชุดตัวอักษรไทย** โปรเจกต์นี้จึงโหลด `Noto Sans Thai` ต่อท้ายในทุก font stack
+เพื่อให้ตัวอักษรไทยแสดงผลได้ครบถ้วน (ฟอนต์ละตินยังคงใช้ตามที่ระบบดีไซน์กำหนด)
+และคง `JetBrains Mono` ไว้สำหรับตัวเลขในตารางคำนวณ 11 ขั้นตอนเพื่อให้หลักตรงกัน
 
 ---
 
@@ -102,10 +132,10 @@
 │   ├── layout.tsx           # Root layout with font imports & providers
 │   └── page.tsx             # Editorial Homepage with hero & feature cards
 ├── components/
-│   ├── calculator/          # CharacterInputs, SkillInputs, EnemyInputs, DamageResult, Breakdown
+│   ├── calculator/          # CharacterInputs, SkillInputs, EnemyInputs, DamageResult, Breakdown, SectionHeading
 │   ├── character/           # CharacterCard
 │   ├── layout/              # Navbar, Footer
-│   └── ui/                  # Button, InputField, Card, Modal, Toast, States
+│   └── ui/                  # Button, InputField, Card (+IconWell, CircleDecoration), Modal, Toast, States, PageHeader
 ├── lib/
 │   ├── auth/                # JWT session, cookie handling, bcryptjs, server guards
 │   ├── calculator/          # Isolated calculation engine, config, types, & regression tests

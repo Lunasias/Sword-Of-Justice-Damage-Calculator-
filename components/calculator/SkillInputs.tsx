@@ -3,6 +3,7 @@
 import React from "react";
 import { SkillData } from "@/lib/calculator/types";
 import { InputField, SelectField } from "@/components/ui/InputField";
+import { SectionHeading } from "@/components/calculator/SectionHeading";
 
 interface SkillInputsProps {
   skill: SkillData;
@@ -35,12 +36,12 @@ export function SkillInputs({ skill, onChange }: SkillInputsProps) {
 
   return (
     <div className="space-y-4">
-      <div className="pb-2 border-b border-steel/30">
-        <h3 className="font-display text-lg text-pure font-light">ข้อมูลสกิล</h3>
-        <p className="text-xs font-ui text-ash">ระบุข้อมูลสกิลที่ต้องการคำนวณความเสียหาย</p>
-      </div>
+      <SectionHeading
+        title="ข้อมูลสกิล"
+        description="ระบุข้อมูลสกิลที่ต้องการคำนวณความเสียหาย"
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <InputField
             label="ชื่อสกิล"

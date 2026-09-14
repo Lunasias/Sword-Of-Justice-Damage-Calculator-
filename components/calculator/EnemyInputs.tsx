@@ -3,6 +3,7 @@
 import React from "react";
 import { EnemyStats } from "@/lib/calculator/types";
 import { InputField } from "@/components/ui/InputField";
+import { SectionHeading } from "@/components/calculator/SectionHeading";
 
 interface EnemyInputsProps {
   enemy: EnemyStats;
@@ -19,12 +20,12 @@ export function EnemyInputs({ enemy, onChange }: EnemyInputsProps) {
 
   return (
     <div className="space-y-4">
-      <div className="pb-2 border-b border-steel/30">
-        <h3 className="font-display text-lg text-pure font-light">ข้อมูลศัตรู</h3>
-        <p className="text-xs font-ui text-ash">ระบุค่าพลังป้องกันและคุณสมบัติต้านทานของเป้าหมาย</p>
-      </div>
+      <SectionHeading
+        title="ข้อมูลศัตรู"
+        description="ระบุค่าพลังป้องกันและคุณสมบัติต้านทานของเป้าหมาย"
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <InputField
           label="ป้องกัน"
           tooltip="พลังป้องกันกายภาพ/เวทของศัตรู"

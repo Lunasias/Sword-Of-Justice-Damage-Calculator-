@@ -12,6 +12,7 @@ import { CalculationBreakdown } from "@/components/calculator/CalculationBreakdo
 import { CharacterSelector, SavedCharacter } from "@/components/calculator/CharacterSelector";
 import { useToast } from "@/components/ui/Toast";
 import { LoadingState } from "@/components/ui/States";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 // Section 43 Baseline Dataset
 const DEFAULT_CHARACTER: CharacterStats = {
@@ -140,9 +141,9 @@ function CalculatorContent() {
       />
 
       {/* Main 3-Column Calculator Layout (Section 11) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left Column: Character Stats (5 cols) */}
-        <div className="lg:col-span-5 rounded-card bg-graphite/30 border border-steel/50 p-6">
+        <div className="rounded-card bg-neu-base p-6 shadow-neu-extruded lg:col-span-5">
           <CharacterInputs
             stats={characterStats}
             onChange={setCharacterStats}
@@ -151,19 +152,20 @@ function CalculatorContent() {
           />
         </div>
 
-        {/* Center Column: Skill & Enemy Configuration (4 cols) */}
-        <div className="lg:col-span-3 space-y-6">
-          <div className="rounded-card bg-graphite/30 border border-steel/50 p-6">
+        {/* Center Column: Skill & Enemy Configuration (3 cols) */}
+        <div className="space-y-6 lg:col-span-3">
+          <div className="rounded-card bg-neu-base p-6 shadow-neu-extruded">
             <SkillInputs skill={skillData} onChange={setSkillData} />
           </div>
 
-          <div className="rounded-card bg-graphite/30 border border-steel/50 p-6">
+          <div className="rounded-card bg-neu-base p-6 shadow-neu-extruded">
             <EnemyInputs enemy={enemyStats} onChange={setEnemyStats} />
           </div>
         </div>
 
-        {/* Right Column: Calculation Result (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
+        {/* Right Column: Calculation Result (4 cols) — extrudes further so the
+            result always reads as the focal surface of the page. */}
+        <div className="space-y-6 lg:col-span-4">
           <DamageResult result={calculationResult} />
         </div>
       </div>
@@ -176,19 +178,12 @@ function CalculatorContent() {
 
 export default function CalculatorPage() {
   return (
-    <div className="max-w-content mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
-      {/* Header */}
-      <div>
-        <span className="text-xs font-mono text-iris uppercase tracking-wider block mb-1">
-          ระบบคำนวณดาเมจ
-        </span>
-        <h1 className="font-display text-3xl sm:text-4xl text-almost-white font-light">
-          เครื่องคำนวณดาเมจ Sword of Justice
-        </h1>
-        <p className="text-xs sm:text-sm font-ui text-ash mt-1.5 leading-relaxed">
-          ระบุข้อมูลตัวละคร ข้อมูลสกิล และคุณสมบัติของศัตรูเพื่อคำนวณดาเมจที่สร้างได้จริง
-        </p>
-      </div>
+    <div className="mx-auto max-w-content space-y-8 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="ระบบคำนวณดาเมจ"
+        title="เครื่องคำนวณดาเมจ Sword of Justice"
+        description="ระบุข้อมูลตัวละคร ข้อมูลสกิล และคุณสมบัติของศัตรูเพื่อคำนวณดาเมจที่สร้างได้จริง"
+      />
 
       <Suspense fallback={<LoadingState message="กำลังเตรียมเครื่องคำนวณ..." />}>
         <CalculatorContent />

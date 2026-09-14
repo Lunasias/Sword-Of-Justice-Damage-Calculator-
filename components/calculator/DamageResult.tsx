@@ -8,6 +8,13 @@ interface DamageResultProps {
   result: CalculationResult;
 }
 
+/**
+ * The calculator's focal surface.
+ *
+ * Nested depth does the work here: the panel is extruded, the hero readout
+ * is carved deeply into it, and the three metric wells are carved one step
+ * less so the eye still lands on the headline number first.
+ */
 export function DamageResult({ result }: DamageResultProps) {
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("th-TH", {
@@ -22,104 +29,98 @@ export function DamageResult({ result }: DamageResultProps) {
     }).format(num);
   };
 
+  const metrics = [
+    {
+      label: "ดาเมจปกติ",
+      value: formatNumber(result.normalDamage),
+      note: "เมื่อไม่ติดคริติคอล",
+      icon: <Target size={15} />,
+      accent: "text-neu-fg",
+    },
+    {
+      label: "ดาเมจคริติคอล",
+      value: formatNumber(result.criticalDamage),
+      note: "คูณดาเมจคริติคอล",
+      icon: <Flame size={15} />,
+      accent: "text-neu-accent",
+    },
+    {
+      label: "โอกาสคริติคอล",
+      value: `${formatDecimals(result.critChanceRate * 100, 2)}%`,
+      note: "หักลบต้านทานแล้ว",
+      icon: <Zap size={15} />,
+      accent: "text-neu-teal",
+    },
+  ];
+
+  const summaries = [
+    { label: "พูลดาเมจรวม", value: formatNumber(result.combinedPool) },
+    { label: "โล่ที่ดูดซับ", value: formatNumber(result.effectiveShieldReduction) },
+    { label: "การลดจากป้องกัน", value: `${formatDecimals(result.defenseReductionRate * 100, 2)}%` },
+    { label: "พูลธาตุ", value: formatNumber(result.elementalPool) },
+  ];
+
   return (
-    <div className="rounded-card bg-graphite/40 border border-steel/60 p-6 md:p-8 flex flex-col justify-between">
+    <div className="flex flex-col justify-between rounded-card bg-neu-base p-6 shadow-neu-extruded md:p-8">
       <div>
-        <div className="flex items-center justify-between pb-3 mb-6 border-b border-steel/40">
+        <div className="mb-6 flex items-start justify-between gap-3 pb-5">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-iris">
+            <span className="mb-1 block text-[11px] font-medium uppercase tracking-widest text-neu-accent">
               ผลลัพธ์การคำนวณ
             </span>
-            <h3 className="font-display text-xl text-pure font-light">
+            <h3 className="font-display text-xl font-bold tracking-tight text-neu-fg">
               ประมาณการความเสียหาย
             </h3>
           </div>
-          <div className="px-2.5 py-1 rounded-full bg-cyan-signal/10 border border-cyan-signal/30 text-cyan-signal font-mono text-xs">
+          <span className="flex items-center gap-1.5 rounded-full bg-neu-base px-3 py-1.5 text-[11px] font-medium text-neu-teal shadow-neu-inset-sm">
+            <ShieldAlert size={12} />
             วิเคราะห์เชิงลึก
-          </div>
+          </span>
         </div>
 
-        {/* Hero Damage Number: Average Damage */}
-        <div className="p-6 rounded-card bg-abyss/90 border border-steel/70 mb-6 text-center">
-          <span className="text-xs font-ui text-ash uppercase tracking-wider block mb-1">
+        {/* Hero readout — carved deepest so it reads as the primary datum */}
+        <div className="mb-6 rounded-card bg-neu-base p-6 text-center shadow-neu-inset-deep">
+          <span className="mb-1 block text-xs font-ui uppercase tracking-wider text-neu-muted">
             ดาเมจเฉลี่ย
           </span>
-          <div className="font-display text-4xl md:text-5xl font-light text-pure tracking-tight my-1">
+          <div className="font-numeric text-4xl font-bold tracking-tight text-neu-accent md:text-5xl">
             {formatNumber(result.averageDamage)}
           </div>
-          <span className="text-[11px] font-mono text-fog">
+          <span className="mt-2 block text-[11px] font-ui text-neu-muted">
             คาดหวังตามโอกาสคริติคอล {formatDecimals(result.critChanceRate * 100, 2)}%
           </span>
         </div>
 
-        {/* Primary 3 Grid Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6">
-          {/* ดาเมจปกติ */}
-          <div className="p-4 rounded-input bg-abyss/60 border border-steel/40 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-ash text-xs font-ui mb-2">
-              <span>ดาเมจปกติ</span>
-              <Target size={14} className="text-ash" />
+        {/* Primary metrics */}
+        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {metrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="flex flex-col justify-between rounded-well bg-neu-base p-4 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep"
+            >
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <span className="text-xs font-ui text-neu-muted">{metric.label}</span>
+                <span className={`flex h-7 w-7 items-center justify-center rounded-full bg-neu-base shadow-neu-inset-sm ${metric.accent}`}>
+                  {metric.icon}
+                </span>
+              </div>
+              <div className={`font-numeric text-xl font-bold ${metric.accent}`}>{metric.value}</div>
+              <span className="mt-1 text-[10px] font-ui text-neu-muted">{metric.note}</span>
             </div>
-            <div className="font-mono text-xl font-medium text-pure">
-              {formatNumber(result.normalDamage)}
-            </div>
-            <span className="text-[10px] font-mono text-fog mt-1">เมื่อไม่ติดคริติคอล</span>
-          </div>
-
-          {/* ดาเมจคริติคอล */}
-          <div className="p-4 rounded-input bg-abyss/60 border border-iris/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-iris-pale text-xs font-ui mb-2">
-              <span>ดาเมจคริติคอล</span>
-              <Flame size={14} className="text-iris" />
-            </div>
-            <div className="font-mono text-xl font-medium text-iris-pale">
-              {formatNumber(result.criticalDamage)}
-            </div>
-            <span className="text-[10px] font-mono text-fog mt-1">คูณดาเมจคริติคอล</span>
-          </div>
-
-          {/* โอกาสคริติคอล */}
-          <div className="p-4 rounded-input bg-abyss/60 border border-cyan-signal/30 flex flex-col justify-between">
-            <div className="flex items-center justify-between text-cyan-signal text-xs font-ui mb-2">
-              <span>โอกาสคริติคอล</span>
-              <Zap size={14} className="text-cyan-signal" />
-            </div>
-            <div className="font-mono text-xl font-medium text-pure">
-              {formatDecimals(result.critChanceRate * 100, 2)}%
-            </div>
-            <span className="text-[10px] font-mono text-fog mt-1">หักลบต้านทานแล้ว</span>
-          </div>
+          ))}
         </div>
 
-        {/* Supporting Summary Cards */}
-        <div className="grid grid-cols-2 gap-3 pt-4 border-t border-steel/30 text-xs font-ui">
-          <div className="flex items-center justify-between p-3 rounded-input bg-abyss/40 border border-steel/30">
-            <span className="text-ash">พูลดาเมจรวม</span>
-            <span className="font-mono text-pure font-medium">
-              {formatNumber(result.combinedPool)}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-input bg-abyss/40 border border-steel/30">
-            <span className="text-ash">โล่ที่ดูดซับ</span>
-            <span className="font-mono text-pure font-medium">
-              {formatNumber(result.effectiveShieldReduction)}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-input bg-abyss/40 border border-steel/30">
-            <span className="text-ash">การลดจากป้องกัน</span>
-            <span className="font-mono text-pure font-medium">
-              {formatDecimals(result.defenseReductionRate * 100, 2)}%
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between p-3 rounded-input bg-abyss/40 border border-steel/30">
-            <span className="text-ash">พูลธาตุ</span>
-            <span className="font-mono text-pure font-medium">
-              {formatNumber(result.elementalPool)}
-            </span>
-          </div>
+        {/* Supporting summary — shallow wells, lower visual weight */}
+        <div className="grid grid-cols-1 gap-3 pt-5 sm:grid-cols-2">
+          {summaries.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center justify-between gap-3 rounded-xl bg-neu-base px-3.5 py-2.5 shadow-neu-inset-sm"
+            >
+              <span className="text-xs font-ui text-neu-muted">{item.label}</span>
+              <span className="font-numeric text-sm font-semibold text-neu-fg">{item.value}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

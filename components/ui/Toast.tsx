@@ -19,6 +19,11 @@ const ToastContext = createContext<ToastContextType>({
   showToast: () => {},
 });
 
+/**
+ * Toasts float above the surface, so they carry the strongest extrusion
+ * (`lifted`) to justify their elevation. Chroma appears only in the icon
+ * well — the body stays monochrome like everything else.
+ */
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -35,30 +40,40 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const iconStyles: Record<ToastType, string> = {
+    success: "text-neu-teal",
+    error: "text-neu-danger",
+    info: "text-neu-accent",
+  };
+
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none">
+      <div
+        className="pointer-events-none fixed bottom-6 right-6 z-50 flex w-full max-w-sm flex-col gap-3"
+        role="region"
+        aria-label="การแจ้งเตือน"
+      >
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-center justify-between p-4 rounded-card border shadow-xl transition-all duration-200 ${
-              toast.type === "success"
-                ? "bg-abyss text-pure border-emerald-500/40"
-                : toast.type === "error"
-                ? "bg-abyss text-pure border-red-500/40"
-                : "bg-abyss text-pure border-iris/40"
-            }`}
+            role="status"
+            aria-live="polite"
+            className="pointer-events-auto flex animate-fade-in items-center justify-between rounded-card bg-neu-base p-4 shadow-neu-lifted transition-all duration-300"
           >
             <div className="flex items-center gap-3">
-              {toast.type === "success" && <CheckCircle2 size={18} className="text-emerald-400" />}
-              {toast.type === "error" && <AlertCircle size={18} className="text-red-400" />}
-              {toast.type === "info" && <Info size={18} className="text-iris" />}
-              <span className="text-xs font-ui">{toast.message}</span>
+              <div
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neu-base shadow-neu-inset-deep ${iconStyles[toast.type]}`}
+              >
+                {toast.type === "success" && <CheckCircle2 size={17} />}
+                {toast.type === "error" && <AlertCircle size={17} />}
+                {toast.type === "info" && <Info size={17} />}
+              </div>
+              <span className="text-xs font-ui text-neu-fg">{toast.message}</span>
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-ash hover:text-pure ml-3 p-0.5"
+              className="ml-3 rounded-full p-1.5 text-neu-muted transition-colors duration-300 hover:text-neu-fg active:shadow-neu-inset-sm focus-neu"
               aria-label="ปิดการแจ้งเตือน"
             >
               <X size={14} />

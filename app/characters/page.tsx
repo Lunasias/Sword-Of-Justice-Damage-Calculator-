@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { InputField, SelectField } from "@/components/ui/InputField";
 import { LoadingState, EmptyState, ErrorState } from "@/components/ui/States";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { useToast } from "@/components/ui/Toast";
 import { PlusCircle, Search, Filter } from "lucide-react";
 
@@ -189,52 +190,49 @@ export default function MyCharactersPage() {
   });
 
   return (
-    <div className="max-w-content mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="text-xs font-mono text-orchid-bloom uppercase tracking-wider block mb-1">
-            การจัดการบิลด์
-          </span>
-          <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-            ตัวละครของฉัน
-          </h1>
-          <p className="text-xs sm:text-sm font-ui text-ash mt-1">
-            จัดการบิลด์ตัวละครที่คุณบันทึกไว้สำหรับใช้คำนวณและแชร์
-          </p>
-        </div>
+    <div className="mx-auto max-w-content space-y-10 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="การจัดการบิลด์"
+        title="ตัวละครของฉัน"
+        description="จัดการบิลด์ตัวละครที่คุณบันทึกไว้สำหรับใช้คำนวณและแชร์"
+        actions={
+          <Button onClick={handleOpenCreate} variant="primary" size="md">
+            <PlusCircle size={16} />
+            สร้างตัวละครใหม่
+          </Button>
+        }
+      />
 
-        <Button onClick={handleOpenCreate} variant="primary" size="md">
-          <PlusCircle size={16} className="mr-1.5" />
-          สร้างตัวละครใหม่
-        </Button>
-      </div>
-
-      {/* Filters Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-card bg-graphite/20 border border-steel/40">
+      {/* Filters Bar — a carved tray holding floating controls. */}
+      <div className="flex flex-col items-center justify-between gap-5 rounded-card bg-neu-base p-5 shadow-neu-inset sm:flex-row">
         <div className="relative w-full sm:w-72">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="ค้นหาชื่อตัวละคร..."
-            className="w-full h-9 pl-9 pr-3 rounded-input bg-abyss/80 text-pure text-xs font-ui border border-steel/60 focus:border-iris focus:outline-none"
+            aria-label="ค้นหาชื่อตัวละคร"
+            className="h-11 w-full rounded-2xl bg-neu-base pl-11 pr-4 font-ui text-xs text-neu-fg shadow-neu-inset-deep transition-all duration-300 placeholder:text-neu-placeholder focus-neu-inset"
           />
-          <Search size={14} className="absolute left-3 top-2.5 text-fog" />
+          <Search
+            size={15}
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neu-muted"
+          />
         </div>
 
-        <div className="flex items-center gap-1.5 w-full sm:w-auto">
-          <span className="text-xs font-ui text-ash flex items-center gap-1 mr-1">
+        <div className="flex w-full items-center gap-2 sm:w-auto">
+          <span className="mr-1 flex items-center gap-1 text-xs font-ui text-neu-muted">
             <Filter size={12} /> สถานะ:
           </span>
           {(["ALL", "PRIVATE", "PUBLIC"] as const).map((mode) => (
             <button
               key={mode}
               onClick={() => setVisibilityFilter(mode)}
-              className={`px-3 py-1 rounded-nav text-xs font-ui transition-colors ${
+              aria-pressed={visibilityFilter === mode}
+              className={`rounded-full px-4 py-2 text-xs font-ui transition-all duration-300 ease-out focus-neu ${
                 visibilityFilter === mode
-                  ? "bg-steel/60 text-pure font-medium"
-                  : "text-ash hover:text-cloud"
+                  ? "bg-neu-base font-semibold text-neu-accent shadow-neu-inset-sm"
+                  : "text-neu-muted shadow-neu-sm hover:text-neu-fg"
               }`}
             >
               {mode === "ALL" ? "ทั้งหมด" : mode === "PRIVATE" ? "ส่วนตัว" : "สาธารณะ"}
@@ -418,7 +416,7 @@ export default function MyCharactersPage() {
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-steel/30">
+          <div className="flex items-center justify-end gap-3 pt-5">
             <Button
               type="button"
               variant="ghost"
@@ -445,10 +443,10 @@ export default function MyCharactersPage() {
         maxWidth="sm"
       >
         <div className="space-y-4">
-          <p className="text-xs font-ui text-ash leading-relaxed">
+          <p className="text-xs font-ui leading-relaxed text-neu-muted">
             คุณแน่ใจหรือไม่ว่าต้องการลบตัวละครนี้? การกระทำนี้ไม่สามารถย้อนกลับได้
           </p>
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-steel/30">
+          <div className="flex items-center justify-end gap-3 pt-3">
             <Button
               type="button"
               variant="ghost"

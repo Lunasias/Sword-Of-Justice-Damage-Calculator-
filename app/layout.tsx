@@ -1,29 +1,37 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Thai, Lora, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans, Noto_Sans_Thai, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { ToastProvider } from "@/components/ui/Toast";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-// Primary UI font — covers all Thai + Latin text beautifully
+// Display face — Latin headings. Plus Jakarta Sans has no Thai subset, so
+// Noto Sans Thai is stacked behind every font stack to carry Thai glyphs.
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+// Body face — Latin body copy and UI labels.
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-ui",
+  display: "swap",
+});
+
+// Thai face — supplies every Thai glyph the Latin faces lack.
 const notoSansThai = Noto_Sans_Thai({
   subsets: ["thai", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-noto",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-thai",
   display: "swap",
 });
 
-// Display serif — hero headline ONLY, never for body/nav
-const lora = Lora({
-  subsets: ["latin"],
-  style: ["italic"],
-  weight: ["400", "700"],
-  variable: "--font-lora",
-  display: "swap",
-});
-
-// Monospace — section stamps, data numbers
+// Numeric face — tabular alignment for the 11-stage damage matrix.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -57,9 +65,9 @@ export default function RootLayout({
   return (
     <html
       lang="th"
-      className={`dark ${notoSansThai.variable} ${lora.variable} ${jetbrainsMono.variable}`}
+      className={`${plusJakarta.variable} ${dmSans.variable} ${notoSansThai.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="bg-near-black text-almost-white min-h-screen flex flex-col selection:bg-signal-violet/30 selection:text-almost-white">
+      <body className="bg-neu-base text-neu-fg font-ui min-h-screen flex flex-col selection:bg-neu-accent/25 selection:text-neu-fg">
         <AuthProvider>
           <ToastProvider>
             <Navbar />

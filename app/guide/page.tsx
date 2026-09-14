@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { BookOpen, Calculator, ShieldCheck, Zap, ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Calculator, ShieldCheck, Zap } from "lucide-react";
 
 export default function GuidePage() {
   const terminologyMap = [
@@ -19,48 +20,55 @@ export default function GuidePage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-10">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <BookOpen size={20} className="text-iris" />
-          <span className="text-xs font-mono text-iris uppercase tracking-wider">
-            เอกสารอ้างอิงและคู่มือ
-          </span>
-        </div>
-        <h1 className="font-display text-3xl sm:text-4xl text-almost-white font-light">
-          คู่มือสูตรคำนวณดาเมจ Sword of Justice
-        </h1>
-        <p className="text-xs sm:text-sm font-ui text-ash mt-1 leading-relaxed">
-          รวบรวมคำศัพท์เกมมาตรฐานภาษาไทย และโครงสร้างสูตรการคำนวณความเสียหายอย่างเป็นระบบ
-        </p>
-      </div>
+    <div className="mx-auto max-w-4xl space-y-12 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="เอกสารอ้างอิงและคู่มือ"
+        title="คู่มือสูตรคำนวณดาเมจ Sword of Justice"
+        description="รวบรวมคำศัพท์เกมมาตรฐานภาษาไทย และโครงสร้างสูตรการคำนวณความเสียหายอย่างเป็นระบบ"
+      />
 
       {/* 1. Mandatory Terminology Reference Table */}
-      <section className="space-y-4">
-        <h2 className="font-display text-xl text-pure font-light pb-2 border-b border-steel/30 flex items-center gap-2">
-          <ShieldCheck size={18} className="text-cyan-signal" />
+      <section className="space-y-5">
+        <h2 className="flex items-center gap-3 font-display text-xl font-bold tracking-tight text-neu-fg">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neu-base text-neu-teal shadow-neu-inset-deep">
+            <ShieldCheck size={18} />
+          </span>
           1. ตารางเทียบคำศัพท์เกมมาตรฐาน
         </h2>
-        <p className="text-xs font-ui text-ash leading-relaxed">
+        <div className="h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
+        <p className="text-xs font-ui leading-relaxed text-neu-muted">
           เพื่อความเข้าใจที่ตรงกันและเป็นมาตรฐานเดียวกันทั้งระบบ แพลตฟอร์มกำหนดให้ใช้คำศัพท์ภาษาไทยเหล่านี้อย่างเคร่งครัด
         </p>
 
-        <div className="overflow-x-auto rounded-card border border-steel/40 bg-graphite/20">
-          <table className="w-full text-left text-xs font-ui">
-            <thead className="bg-abyss/80 text-ash border-b border-steel/40">
-              <tr>
-                <th className="p-3.5 font-mono">คำศัพท์เดิม / ต้นฉบับ</th>
-                <th className="p-3.5 font-medium text-pure">คำศัพท์มาตรฐาน (ใช้ในระบบ)</th>
-                <th className="p-3.5">คำอธิบาย</th>
+        {/* The table sits in a carved basin; its header is pressed in and each
+            row floats as three joined tiles that lift on hover. */}
+        <div className="overflow-x-auto rounded-card bg-neu-base p-3 shadow-neu-inset">
+          <table className="w-full border-separate border-spacing-x-0 border-spacing-y-3 text-left text-xs font-ui">
+            <thead>
+              <tr className="text-neu-muted">
+                <th className="rounded-l-xl bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">
+                  คำศัพท์เดิม / ต้นฉบับ
+                </th>
+                <th className="bg-neu-base px-4 py-3 font-semibold text-neu-fg shadow-neu-inset-deep">
+                  คำศัพท์มาตรฐาน (ใช้ในระบบ)
+                </th>
+                <th className="rounded-r-xl bg-neu-base px-4 py-3 font-medium shadow-neu-inset-deep">
+                  คำอธิบาย
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-steel/30">
+            <tbody>
               {terminologyMap.map((item, idx) => (
-                <tr key={idx} className="hover:bg-steel/20 transition-colors">
-                  <td className="p-3.5 font-mono text-fog">{item.source}</td>
-                  <td className="p-3.5 font-medium text-cyan-signal">{item.thai}</td>
-                  <td className="p-3.5 text-ash">{item.desc}</td>
+                <tr key={idx} className="group">
+                  <td className="bg-neu-base px-4 py-3 font-numeric text-neu-muted shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded rounded-l-xl">
+                    {item.source}
+                  </td>
+                  <td className="bg-neu-base px-4 py-3 font-semibold text-neu-teal shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded">
+                    {item.thai}
+                  </td>
+                  <td className="bg-neu-base px-4 py-3 text-neu-muted shadow-neu-sm transition-shadow duration-300 group-hover:shadow-neu-extruded rounded-r-xl">
+                    {item.desc}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -69,30 +77,39 @@ export default function GuidePage() {
       </section>
 
       {/* 2. Core Damage Formula */}
-      <section className="space-y-4">
-        <h2 className="font-display text-xl text-pure font-light pb-2 border-b border-steel/30 flex items-center gap-2">
-          <Calculator size={18} className="text-iris" />
+      <section className="space-y-5">
+        <h2 className="flex items-center gap-3 font-display text-xl font-bold tracking-tight text-neu-fg">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neu-base text-neu-accent shadow-neu-inset-deep">
+            <Calculator size={18} />
+          </span>
           2. โครงสร้างสูตรคำนวณดาเมจ
         </h2>
+        <div className="h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
 
-        <div className="p-6 rounded-card bg-abyss border border-steel/50 font-mono text-xs space-y-4">
+        <div className="space-y-5 rounded-card bg-neu-base p-6 shadow-neu-inset md:p-8">
           <div>
-            <span className="text-iris font-semibold block mb-1">สูตรดาเมจพื้นฐาน (Skill Damage):</span>
-            <div className="p-3 rounded bg-obsidian border border-steel/40 text-pure">
+            <span className="mb-2 block text-xs font-ui font-semibold text-neu-accent">
+              สูตรดาเมจพื้นฐาน (Skill Damage):
+            </span>
+            <div className="rounded-well bg-neu-base p-4 font-numeric text-xs leading-relaxed text-neu-fg shadow-neu-extruded">
               ดาเมจปกติ = ตัวคูณสกิล × (พูลดาเมจปกติที่เหลือ + พูลดาเมจธาตุ)
             </div>
           </div>
 
           <div>
-            <span className="text-iris font-semibold block mb-1">พลังโจมตีจากสกิล (Skill Attack):</span>
-            <div className="p-3 rounded bg-obsidian border border-steel/40 text-pure">
+            <span className="mb-2 block text-xs font-ui font-semibold text-neu-accent">
+              พลังโจมตีจากสกิล (Skill Attack):
+            </span>
+            <div className="rounded-well bg-neu-base p-4 font-numeric text-xs leading-relaxed text-neu-fg shadow-neu-extruded">
               Skill Attack = 923 + 81 × (ระดับสกิล - 15)
             </div>
           </div>
 
           <div>
-            <span className="text-iris font-semibold block mb-1">พูลดาเมจเริ่มต้น (Initial Damage Pool):</span>
-            <div className="p-3 rounded bg-obsidian border border-steel/40 text-pure">
+            <span className="mb-2 block text-xs font-ui font-semibold text-neu-accent">
+              พูลดาเมจเริ่มต้น (Initial Damage Pool):
+            </span>
+            <div className="rounded-well bg-neu-base p-4 font-numeric text-xs leading-relaxed text-neu-fg shadow-neu-extruded">
               พูลเริ่มต้น = พลังโจมตีจากสกิล + ดาเมจรวม + ข่มสำนัก - โล่พลังชี่ที่มีผล - ป้องกันสำนัก
             </div>
           </div>
@@ -101,63 +118,58 @@ export default function GuidePage() {
 
       {/* 3. Detailed Mechanism Breakdowns */}
       <section className="space-y-6">
-        <h2 className="font-display text-xl text-pure font-light pb-2 border-b border-steel/30 flex items-center gap-2">
-          <Zap size={18} className="text-orchid-bloom" />
+        <h2 className="flex items-center gap-3 font-display text-xl font-bold tracking-tight text-neu-fg">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neu-base text-neu-accent-light shadow-neu-inset-deep">
+            <Zap size={18} />
+          </span>
           3. รายละเอียดกลไกการลดทอนดาเมจ
         </h2>
+        <div className="h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
 
-        {/* Qi Shield */}
-        <div className="p-5 rounded-card bg-graphite/20 border border-steel/40 space-y-2 text-xs font-ui">
-          <h3 className="font-display text-base text-pure font-light">
-            การทำงานของโล่พลังชี่ และทำลายโล่
-          </h3>
-          <p className="text-ash leading-relaxed">
-            โล่พลังชี่จะช่วยดูดซับความเสียหายก่อนลดเลือด ค่าทำลายโล่จะช่วยลดทอนประสิทธิภาพของโล่ลง
-            เมื่อค่าทำลายโล่สูงกว่าหรือเท่ากับโล่พลังชี่ของศัตรู ผลของโล่จะกลายเป็นศูนย์โดยสิ้นเชิง
-          </p>
-        </div>
-
-        {/* Armor Penetration & Defense */}
-        <div className="p-5 rounded-card bg-graphite/20 border border-steel/40 space-y-2 text-xs font-ui">
-          <h3 className="font-display text-base text-pure font-light">
-            การเจาะเกราะและการลดทอนจากพลังป้องกัน
-          </h3>
-          <p className="text-ash leading-relaxed mb-2">
-            พลังป้องกันคงเหลือ = max(ป้องกัน - เจาะเกราะ, 0)
-          </p>
-          <div className="p-2.5 rounded bg-abyss font-mono text-[11px] text-cloud">
-            อัตราลดทอนป้องกัน = พลังป้องกันคงเหลือ / (พลังป้องกันคงเหลือ + 2860)
+        {/* Each mechanism is a raised card; its formula is carved into it. */}
+        {[
+          {
+            title: "การทำงานของโล่พลังชี่ และทำลายโล่",
+            body: "โล่พลังชี่จะช่วยดูดซับความเสียหายก่อนลดเลือด ค่าทำลายโล่จะช่วยลดทอนประสิทธิภาพของโล่ลง เมื่อค่าทำลายโล่สูงกว่าหรือเท่ากับโล่พลังชี่ของศัตรู ผลของโล่จะกลายเป็นศูนย์โดยสิ้นเชิง",
+            formula: null,
+            note: null,
+          },
+          {
+            title: "การเจาะเกราะและการลดทอนจากพลังป้องกัน",
+            body: "พลังป้องกันคงเหลือ = max(ป้องกัน - เจาะเกราะ, 0)",
+            formula: "อัตราลดทอนป้องกัน = พลังป้องกันคงเหลือ / (พลังป้องกันคงเหลือ + 2860)",
+            note: "*เมื่อเจาะเกราะมากกว่าพลังป้องกัน อัตราการลดทอนจะเป็น 0% แต่จะไม่ให้ผลประโยชน์เพิ่มเกินค่า 0",
+          },
+          {
+            title: "การคำนวณโจมตีธาตุทั้งหมด",
+            body: null,
+            formula: "พูลดาเมจธาตุ = โจมตีธาตุทั้งหมด × (1 - ต้านทานธาตุ / (ต้านทานธาตุ + 530))",
+            note: "พูลดาเมจธาตุจะไม่ถูกลดทอนโดยพลังป้องกันกายภาพ แต่จะขึ้นตรงกับต้านทานธาตุของศัตรูเท่านั้น",
+          },
+          {
+            title: "อัตราคริติคอลและดาเมจคริติคอล",
+            body: null,
+            formula:
+              "โอกาสคริติคอล = 1.15 × (คริติคอล - ต้านทานคริติคอล) / ((คริติคอล - ต้านทานคริติคอล) + 938)",
+            note: "ดาเมจคริติคอล = ดาเมจปกติ × (ดาเมจคริติคอล % / 100)",
+          },
+        ].map((item) => (
+          <div
+            key={item.title}
+            className="space-y-3 rounded-card bg-neu-base p-6 text-xs font-ui shadow-neu-extruded transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-neu-lifted"
+          >
+            <h3 className="font-display text-base font-bold tracking-tight text-neu-fg">
+              {item.title}
+            </h3>
+            {item.body && <p className="leading-relaxed text-neu-muted">{item.body}</p>}
+            {item.formula && (
+              <div className="rounded-well bg-neu-base p-3.5 font-numeric text-[11px] leading-relaxed text-neu-fg shadow-neu-inset-sm">
+                {item.formula}
+              </div>
+            )}
+            {item.note && <p className="text-[11px] leading-relaxed text-neu-muted">{item.note}</p>}
           </div>
-          <p className="text-fog text-[11px] mt-1">
-            *เมื่อเจาะเกราะมากกว่าพลังป้องกัน อัตราการลดทอนจะเป็น 0% แต่จะไม่ให้ผลประโยชน์เพิ่มเกินค่า 0
-          </p>
-        </div>
-
-        {/* Elemental Damage */}
-        <div className="p-5 rounded-card bg-graphite/20 border border-steel/40 space-y-2 text-xs font-ui">
-          <h3 className="font-display text-base text-pure font-light">
-            การคำนวณโจมตีธาตุทั้งหมด
-          </h3>
-          <div className="p-2.5 rounded bg-abyss font-mono text-[11px] text-cloud">
-            พูลดาเมจธาตุ = โจมตีธาตุทั้งหมด × (1 - ต้านทานธาตุ / (ต้านทานธาตุ + 530))
-          </div>
-          <p className="text-ash leading-relaxed mt-1">
-            พูลดาเมจธาตุจะไม่ถูกลดทอนโดยพลังป้องกันกายภาพ แต่จะขึ้นตรงกับต้านทานธาตุของศัตรูเท่านั้น
-          </p>
-        </div>
-
-        {/* Critical Formula */}
-        <div className="p-5 rounded-card bg-graphite/20 border border-steel/40 space-y-2 text-xs font-ui">
-          <h3 className="font-display text-base text-pure font-light">
-            อัตราคริติคอลและดาเมจคริติคอล
-          </h3>
-          <div className="p-2.5 rounded bg-abyss font-mono text-[11px] text-cloud">
-            โอกาสคริติคอล = 1.15 × (คริติคอล - ต้านทานคริติคอล) / ((คริติคอล - ต้านทานคริติคอล) + 938)
-          </div>
-          <p className="text-ash leading-relaxed mt-1">
-            ดาเมจคริติคอล = ดาเมจปกติ × (ดาเมจคริติคอล % / 100)
-          </p>
-        </div>
+        ))}
       </section>
 
       {/* CTA to Calculator */}
@@ -167,7 +179,6 @@ export default function GuidePage() {
             ทดลองคำนวณด้วยตนเอง →
           </Button>
         </Link>
-      </div>
-    </div>
+      </div>    </div>
   );
 }

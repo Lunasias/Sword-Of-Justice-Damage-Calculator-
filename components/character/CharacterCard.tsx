@@ -36,6 +36,10 @@ interface CharacterCardProps {
   onEdit?: (character: CharacterCardData) => void;
 }
 
+/**
+ * Build tile. The whole card is extruded; the stat matrix inside is carved
+ * with `insetDeep`, so the numbers read as engraved into the card body.
+ */
 export function CharacterCard({
   character,
   onDelete,
@@ -92,86 +96,81 @@ export function CharacterCard({
     }
   };
 
+  const stats = [
+    { label: "ดาเมจรวม", value: character.attack },
+    { label: "โจมตีธาตุ", value: character.elementalAttack },
+    { label: "เจาะเกราะ", value: character.armorPenetration },
+    { label: "คริติคอล", value: character.crit },
+  ];
+
   return (
-    <div className="group rounded-card bg-graphite/30 border border-steel/40 hover:border-steel/80 p-5 flex flex-col justify-between transition-all duration-200">
+    <div className="group flex flex-col justify-between rounded-card bg-neu-base p-6 shadow-neu-extruded transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-neu-lifted">
       <div>
         {/* Header */}
-        <div className="flex items-start justify-between gap-3 mb-2">
-          <div>
+        <div className="mb-2 flex items-start justify-between gap-3">
+          <div className="min-w-0">
             <Link
               href={`/characters/${character.id}`}
-              className="font-display text-base text-pure font-light group-hover:text-iris transition-colors"
+              className="font-display text-base font-bold tracking-tight text-neu-fg transition-colors duration-300 group-hover:text-neu-accent focus-neu"
             >
               {character.name}
             </Link>
             {character.user && (
-              <div className="flex items-center gap-1.5 text-xs font-ui text-ash mt-0.5">
-                <User size={12} className="text-fog" />
+              <div className="mt-1 flex items-center gap-1.5 text-xs font-ui text-neu-muted">
+                <User size={12} className="text-neu-muted" />
                 <span>โดย {character.user.username}</span>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span
-              className={`px-2 py-0.5 rounded-full text-[10px] font-mono flex items-center gap-1 ${
-                character.visibility === "PUBLIC"
-                  ? "bg-cyan-signal/10 text-cyan-signal border border-cyan-signal/20"
-                  : "bg-steel/30 text-ash border border-steel/40"
-              }`}
-            >
-              {character.visibility === "PUBLIC" ? (
-                <>
-                  <Globe size={10} /> สาธารณะ
-                </>
-              ) : (
-                <>
-                  <Lock size={10} /> ส่วนตัว
-                </>
-              )}
-            </span>
-          </div>
+          <span
+            className={`flex shrink-0 items-center gap-1.5 rounded-full bg-neu-base px-2.5 py-1 text-[10px] font-medium shadow-neu-inset-sm ${
+              character.visibility === "PUBLIC" ? "text-neu-teal" : "text-neu-muted"
+            }`}
+          >
+            {character.visibility === "PUBLIC" ? (
+              <>
+                <Globe size={10} /> สาธารณะ
+              </>
+            ) : (
+              <>
+                <Lock size={10} /> ส่วนตัว
+              </>
+            )}
+          </span>
         </div>
 
         {/* Description */}
         {character.description && (
-          <p className="text-xs font-ui text-ash line-clamp-2 mb-4 leading-relaxed">
+          <p className="mb-4 line-clamp-2 text-xs font-ui leading-relaxed text-neu-muted">
             {character.description}
           </p>
         )}
 
-        {/* Key Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 rounded-input bg-abyss/80 border border-steel/30 text-xs font-mono my-4">
-          <div>
-            <span className="text-fog text-[10px] block">ดาเมจรวม</span>
-            <span className="text-cloud font-medium">{character.attack.toLocaleString()}</span>
-          </div>
-          <div>
-            <span className="text-fog text-[10px] block">โจมตีธาตุ</span>
-            <span className="text-cloud font-medium">{character.elementalAttack.toLocaleString()}</span>
-          </div>
-          <div>
-            <span className="text-fog text-[10px] block">เจาะเกราะ</span>
-            <span className="text-cloud font-medium">{character.armorPenetration.toLocaleString()}</span>
-          </div>
-          <div>
-            <span className="text-fog text-[10px] block">คริติคอล</span>
-            <span className="text-cloud font-medium">{character.crit.toLocaleString()}</span>
-          </div>
+        {/* Engraved stat matrix */}
+        <div className="my-5 grid grid-cols-2 gap-3 rounded-well bg-neu-base p-3.5 shadow-neu-inset-deep sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.label}>
+              <span className="mb-0.5 block text-[10px] font-ui text-neu-muted">{stat.label}</span>
+              <span className="font-numeric text-sm font-semibold text-neu-fg">
+                {stat.value.toLocaleString()}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="pt-3 border-t border-steel/30 flex items-center justify-between gap-2">
+      {/* Actions */}
+      <div className="flex items-center justify-between gap-2 pt-4">
         <div className="flex items-center gap-1.5">
           <Button
             type="button"
             size="sm"
             variant="primary"
             onClick={handleUseInCalculator}
-            className="text-xs h-8 px-3"
+            className="px-3"
           >
-            <Calculator size={13} className="mr-1" />
+            <Calculator size={13} />
             ใช้คำนวณ
           </Button>
 
@@ -180,21 +179,22 @@ export function CharacterCard({
             size="sm"
             variant="ghost"
             onClick={handleDuplicate}
-            className="text-xs h-8 px-2 text-ash hover:text-pure"
+            className="px-2.5 text-neu-muted hover:text-neu-fg"
             title="คัดลอกตัวละครนี้"
           >
-            <Copy size={13} className="mr-1" />
+            <Copy size={13} />
             คัดลอก
           </Button>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           {onEdit && (isOwner || isAdmin) && (
             <button
               type="button"
               onClick={() => onEdit(character)}
-              className="p-1.5 text-ash hover:text-pure rounded hover:bg-steel/40 transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-muted shadow-neu-sm transition-all duration-300 ease-out hover:text-neu-fg hover:shadow-neu-extruded active:translate-y-0.5 active:shadow-neu-inset-sm focus-neu"
               title="แก้ไขตัวละคร"
+              aria-label="แก้ไขตัวละคร"
             >
               <Edit2 size={14} />
             </button>
@@ -204,8 +204,9 @@ export function CharacterCard({
             <button
               type="button"
               onClick={() => onDelete(character.id)}
-              className="p-1.5 text-ash hover:text-red-400 rounded hover:bg-red-500/10 transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-muted shadow-neu-sm transition-all duration-300 ease-out hover:text-neu-danger hover:shadow-neu-extruded active:translate-y-0.5 active:shadow-neu-inset-sm focus-neu"
               title="ลบตัวละคร"
+              aria-label="ลบตัวละคร"
             >
               <Trash2 size={14} />
             </button>

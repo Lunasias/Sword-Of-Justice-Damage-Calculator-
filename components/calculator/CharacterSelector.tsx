@@ -178,28 +178,28 @@ export function CharacterSelector({
   };
 
   return (
-    <div className="p-4 rounded-card bg-graphite/40 border border-steel/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div className="flex flex-col items-start justify-between gap-4 rounded-card bg-neu-base p-4 shadow-neu-inset md:flex-row md:items-center">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-nav bg-abyss text-iris border border-steel/50 flex items-center justify-center">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neu-base text-neu-accent shadow-neu-inset-deep">
           <User size={18} />
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-ui text-ash">บิลด์ตัวละครที่ใช้งาน:</span>
+            <span className="text-xs font-ui text-neu-muted">บิลด์ตัวละครที่ใช้งาน:</span>
             {activeCharacter ? (
-              <span className="text-sm font-ui font-medium text-pure">
+              <span className="text-sm font-ui font-medium text-neu-fg">
                 {activeCharacter.name}
               </span>
             ) : (
-              <span className="text-xs font-ui text-fog">กำหนดค่าด้วยตนเอง</span>
+              <span className="text-xs font-ui text-neu-muted">กำหนดค่าด้วยตนเอง</span>
             )}
             {activeCharacter && (
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-steel/30 text-cloud">
+              <span className="rounded-full bg-neu-base px-2.5 py-1 font-numeric text-[10px] text-neu-muted shadow-neu-inset-sm">
                 {activeCharacter.visibility === "PUBLIC" ? "สาธารณะ" : "ส่วนตัว"}
               </span>
             )}
           </div>
-          <p className="text-[11px] font-ui text-fog">
+          <p className="text-[11px] font-ui text-neu-muted">
             {activeCharacter
               ? activeCharacter.userId === user?.id
                 ? "การแก้ไขค่าในเครื่องคำนวณจะไม่ถูกบันทึกอัตโนมัติ"
@@ -242,7 +242,7 @@ export function CharacterSelector({
             size="sm"
             variant="ghost"
             onClick={() => setSaveNewModalOpen(true)}
-            className="text-cloud hover:text-pure"
+            className="text-neu-fg hover:text-neu-fg"
           >
             <PlusCircle size={14} className="mr-1" />
             บันทึกเป็นตัวละครใหม่
@@ -253,7 +253,7 @@ export function CharacterSelector({
           <button
             type="button"
             onClick={onClearActiveCharacter}
-            className="text-xs font-ui text-ash hover:text-red-400 transition-colors px-2 py-1"
+            className="text-xs font-ui text-neu-muted hover:text-red-400 transition-colors px-2 py-1"
           >
             ยกเลิกการเลือก
           </button>
@@ -271,18 +271,18 @@ export function CharacterSelector({
           {/* User's Characters */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <User size={16} className="text-iris" />
-              <h4 className="font-ui font-medium text-pure text-sm">
+              <User size={16} className="text-neu-accent" />
+              <h4 className="font-ui font-medium text-neu-fg text-sm">
                 ตัวละครของฉัน ({myCharacters.length})
               </h4>
             </div>
 
             {!user ? (
-              <div className="p-4 rounded-card bg-abyss text-center text-xs font-ui text-ash border border-steel/30">
+              <div className="rounded-card bg-neu-base p-4 text-center text-xs font-ui text-neu-muted shadow-neu-inset">
                 เข้าสู่ระบบเพื่อดูและเลือกตัวละครของคุณ
               </div>
             ) : myCharacters.length === 0 ? (
-              <div className="p-4 rounded-card bg-abyss text-center text-xs font-ui text-ash border border-steel/30">
+              <div className="rounded-card bg-neu-base p-4 text-center text-xs font-ui text-neu-muted shadow-neu-inset">
                 คุณยังไม่มีตัวละครที่บันทึกไว้
               </div>
             ) : (
@@ -295,24 +295,24 @@ export function CharacterSelector({
                       setSelectModalOpen(false);
                       showToast(`โหลดตัวละคร "${char.name}" เรียบร้อยแล้ว`, "success");
                     }}
-                    className={`p-3.5 rounded-card bg-abyss hover:bg-steel/30 border transition-all cursor-pointer ${
+                    className={`cursor-pointer rounded-well bg-neu-base p-4 shadow-neu-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-neu-extruded ${
                       activeCharacter?.id === char.id
-                        ? "border-iris"
-                        : "border-steel/40"
+                        ? "shadow-neu-inset"
+                        : ""
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-ui font-medium text-pure text-sm">
+                      <span className="font-ui font-medium text-neu-fg text-sm">
                         {char.name}
                       </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-steel/30 text-ash">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neu-base text-neu-muted">
                         {char.visibility === "PUBLIC" ? "สาธารณะ" : "ส่วนตัว"}
                       </span>
                     </div>
-                    <div className="grid grid-cols-3 gap-1 font-mono text-[11px] text-ash mt-2">
-                      <div>ดาเมจรวม: <span className="text-cloud">{char.attack}</span></div>
-                      <div>เจาะเกราะ: <span className="text-cloud">{char.armorPenetration}</span></div>
-                      <div>คริติคอล: <span className="text-cloud">{char.crit}</span></div>
+                    <div className="grid grid-cols-3 gap-1 font-mono text-[11px] text-neu-muted mt-2">
+                      <div>ดาเมจรวม: <span className="text-neu-fg">{char.attack}</span></div>
+                      <div>เจาะเกราะ: <span className="text-neu-fg">{char.armorPenetration}</span></div>
+                      <div>คริติคอล: <span className="text-neu-fg">{char.crit}</span></div>
                     </div>
                   </div>
                 ))}
@@ -323,14 +323,14 @@ export function CharacterSelector({
           {/* Public Characters Directory Preview */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Globe size={16} className="text-cyan-signal" />
-              <h4 className="font-ui font-medium text-pure text-sm">
+              <Globe size={16} className="text-neu-teal" />
+              <h4 className="font-ui font-medium text-neu-fg text-sm">
                 ตัวละครสาธารณะแนะนำ
               </h4>
             </div>
 
             {publicCharacters.length === 0 ? (
-              <div className="p-4 rounded-card bg-abyss text-center text-xs font-ui text-ash border border-steel/30">
+              <div className="rounded-card bg-neu-base p-4 text-center text-xs font-ui text-neu-muted shadow-neu-inset">
                 ยังไม่มีตัวละครสาธารณะ
               </div>
             ) : (
@@ -343,24 +343,24 @@ export function CharacterSelector({
                       setSelectModalOpen(false);
                       showToast(`โหลดตัวละครสาธารณะ "${char.name}" เรียบร้อยแล้ว`, "success");
                     }}
-                    className={`p-3.5 rounded-card bg-abyss hover:bg-steel/30 border transition-all cursor-pointer ${
+                    className={`cursor-pointer rounded-well bg-neu-base p-4 shadow-neu-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-neu-extruded ${
                       activeCharacter?.id === char.id
-                        ? "border-cyan-signal"
-                        : "border-steel/40"
+                        ? "shadow-neu-inset"
+                        : ""
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-ui font-medium text-pure text-sm">
+                      <span className="font-ui font-medium text-neu-fg text-sm">
                         {char.name}
                       </span>
-                      <span className="text-[10px] font-ui text-ash">
+                      <span className="text-[10px] font-ui text-neu-muted">
                         โดย {char.user?.username || "ไม่ระบุ"}
                       </span>
                     </div>
-                    <div className="grid grid-cols-3 gap-1 font-mono text-[11px] text-ash mt-2">
-                      <div>ดาเมจรวม: <span className="text-cloud">{char.attack}</span></div>
-                      <div>เจาะเกราะ: <span className="text-cloud">{char.armorPenetration}</span></div>
-                      <div>คริติคอล: <span className="text-cloud">{char.crit}</span></div>
+                    <div className="grid grid-cols-3 gap-1 font-mono text-[11px] text-neu-muted mt-2">
+                      <div>ดาเมจรวม: <span className="text-neu-fg">{char.attack}</span></div>
+                      <div>เจาะเกราะ: <span className="text-neu-fg">{char.armorPenetration}</span></div>
+                      <div>คริติคอล: <span className="text-neu-fg">{char.crit}</span></div>
                     </div>
                   </div>
                 ))}
@@ -403,8 +403,8 @@ export function CharacterSelector({
             ]}
           />
 
-          <div className="p-3 rounded-input bg-abyss/80 border border-steel/40 font-mono text-xs text-ash space-y-1">
-            <div className="text-cloud font-ui font-medium mb-1">ค่าสเตตัสที่จะบันทึก:</div>
+          <div className="space-y-1.5 rounded-well bg-neu-base p-4 font-numeric text-xs text-neu-muted shadow-neu-inset-sm">
+            <div className="mb-1.5 font-ui text-xs font-semibold text-neu-fg">ค่าสเตตัสที่จะบันทึก:</div>
             <div className="grid grid-cols-2 gap-1 text-[11px]">
               <div>ดาเมจรวม: {currentStats.attack}</div>
               <div>โจมตีธาตุทั้งหมด: {currentStats.elementalAttack}</div>
@@ -415,7 +415,7 @@ export function CharacterSelector({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-steel/30">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-neu-shadow-dark/25">
             <Button
               type="button"
               variant="ghost"

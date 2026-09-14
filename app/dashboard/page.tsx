@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { CharacterCard, CharacterCardData } from "@/components/character/CharacterCard";
 import { LoadingState, EmptyState } from "@/components/ui/States";
+import { PageHeader } from "@/components/ui/PageHeader";
 import {
   Calculator,
   UserCheck,
@@ -60,92 +61,95 @@ export default function DashboardPage() {
   const recentCharacters = characters.slice(0, 3);
 
   return (
-    <div className="max-w-content mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-10">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="text-xs font-mono text-iris uppercase tracking-wider block mb-1">
-            ภาพรวมบัญชี
-          </span>
-          <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-            แดชบอร์ด
-          </h1>
-          <p className="text-xs sm:text-sm font-ui text-ash mt-1">
-            ยินดีต้อนรับกลับ, <span className="text-pure font-medium">{user.username}</span>
-          </p>
-        </div>
+    <div className="mx-auto max-w-content space-y-10 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="ภาพรวมบัญชี"
+        title="แดชบอร์ด"
+        description={`ยินดีต้อนรับกลับ, ${user.username}`}
+        actions={
+          <>
+            <Link href="/calculator">
+              <Button variant="primary" size="md">
+                <Calculator size={15} />
+                เริ่มคำนวณ
+              </Button>
+            </Link>
+            <Link href="/characters">
+              <Button variant="secondary" size="md">
+                <PlusCircle size={15} />
+                สร้างตัวละคร
+              </Button>
+            </Link>
+          </>
+        }
+      />
 
-        <div className="flex items-center gap-2.5">
-          <Link href="/calculator">
-            <Button variant="primary" size="md">
-              <Calculator size={15} className="mr-1.5" />
-              เริ่มคำนวณ
-            </Button>
-          </Link>
-          <Link href="/characters">
-            <Button variant="secondary" size="md">
-              <PlusCircle size={15} className="mr-1.5" />
-              สร้างตัวละคร
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Metric Data Blocks (Section 29) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {/* Metric Data Blocks — numbers are engraved into the surface. */}
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
         {/* จำนวนตัวละคร */}
-        <div className="rounded-card bg-graphite/30 border border-steel/50 p-6 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-3">
+        <div className="flex flex-col justify-between rounded-card bg-neu-base p-6 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep">
+          <div className="mb-4 flex items-center justify-between gap-2 text-xs font-ui text-neu-muted">
             <span>จำนวนตัวละครทั้งหมด</span>
-            <UserCheck size={16} className="text-iris" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-accent shadow-neu-inset-deep">
+              <UserCheck size={16} />
+            </span>
           </div>
-          <div className="font-display text-4xl sm:text-5xl font-light text-pure mb-1">
+          <div className="mb-1 font-numeric text-4xl font-bold tracking-tight text-neu-fg sm:text-5xl">
             {characters.length}
           </div>
-          <span className="text-[11px] font-mono text-fog">บิลด์ที่คุณบันทึกไว้ในระบบ</span>
+          <span className="text-[11px] font-ui text-neu-muted">บิลด์ที่คุณบันทึกไว้ในระบบ</span>
         </div>
 
         {/* ตัวละครสาธารณะ */}
-        <div className="rounded-card bg-graphite/30 border border-steel/50 p-6 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-3">
+        <div className="flex flex-col justify-between rounded-card bg-neu-base p-6 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep">
+          <div className="mb-4 flex items-center justify-between gap-2 text-xs font-ui text-neu-muted">
             <span>ตัวละครสาธารณะ</span>
-            <Globe size={16} className="text-cyan-signal" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-teal shadow-neu-inset-deep">
+              <Globe size={16} />
+            </span>
           </div>
-          <div className="font-display text-4xl sm:text-5xl font-light text-pure mb-1">
+          <div className="mb-1 font-numeric text-4xl font-bold tracking-tight text-neu-fg sm:text-5xl">
             {publicCount}
           </div>
-          <span className="text-[11px] font-mono text-fog">เปิดให้ผู้เล่นอื่นดูและนำไปคำนวณ</span>
+          <span className="text-[11px] font-ui text-neu-muted">เปิดให้ผู้เล่นอื่นดูและนำไปคำนวณ</span>
         </div>
 
         {/* ตัวละครส่วนตัว */}
-        <div className="rounded-card bg-graphite/30 border border-steel/50 p-6 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-ash text-xs font-ui mb-3">
+        <div className="flex flex-col justify-between rounded-card bg-neu-base p-6 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep">
+          <div className="mb-4 flex items-center justify-between gap-2 text-xs font-ui text-neu-muted">
             <span>ตัวละครส่วนตัว</span>
-            <Lock size={16} className="text-ash" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-muted shadow-neu-inset-deep">
+              <Lock size={16} />
+            </span>
           </div>
-          <div className="font-display text-4xl sm:text-5xl font-light text-pure mb-1">
+          <div className="mb-1 font-numeric text-4xl font-bold tracking-tight text-neu-fg sm:text-5xl">
             {privateCount}
           </div>
-          <span className="text-[11px] font-mono text-fog">มองเห็นและใช้งานได้เฉพาะคุณ</span>
+          <span className="text-[11px] font-ui text-neu-muted">มองเห็นและใช้งานได้เฉพาะคุณ</span>
         </div>
       </div>
 
       {/* Recent Characters Section */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-steel/30">
-          <div>
-            <h2 className="font-display text-xl text-pure font-light">
-              ตัวละครล่าสุด
-            </h2>
-            <p className="text-xs font-ui text-ash">บิลด์ตัวละครที่คุณสร้างหรือแก้ไขล่าสุด</p>
-          </div>
+      <div className="space-y-6">
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="font-display text-xl font-bold tracking-tight text-neu-fg">
+                ตัวละครล่าสุด
+              </h2>
+              <p className="mt-0.5 text-xs font-ui text-neu-muted">
+                บิลด์ตัวละครที่คุณสร้างหรือแก้ไขล่าสุด
+              </p>
+            </div>
 
-          <Link
-            href="/characters"
-            className="text-xs font-ui text-iris hover:underline flex items-center gap-1"
-          >
-            ดูตัวละครทั้งหมด ({characters.length}) <ArrowRight size={13} />
-          </Link>
+            <Link
+              href="/characters"
+              className="inline-flex items-center gap-1 rounded-lg text-xs font-ui text-neu-accent transition-colors duration-300 hover:text-neu-accent-light focus-neu"
+            >
+              ดูตัวละครทั้งหมด ({characters.length}) <ArrowRight size={13} />
+            </Link>
+          </div>
+          <div className="mt-4 h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
         </div>
 
         {isLoading ? (
@@ -158,7 +162,7 @@ export default function DashboardPage() {
             onAction={() => (window.location.href = "/characters")}
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
             {recentCharacters.map((char) => (
               <CharacterCard key={char.id} character={char} />
             ))}
@@ -166,13 +170,13 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Quick Action Banner */}
-      <div className="p-8 rounded-card bg-abyss border border-steel/40 flex flex-col sm:flex-row items-center justify-between gap-6">
+      {/* Quick Action Banner — recessed, marking the end of the page content. */}
+      <div className="flex flex-col items-center justify-between gap-6 rounded-card bg-neu-base p-8 shadow-neu-inset sm:flex-row">
         <div>
-          <h3 className="font-display text-xl text-pure font-light mb-1">
+          <h3 className="mb-1 font-display text-xl font-bold tracking-tight text-neu-fg">
             สำรวจบิลด์ของชุมชน
           </h3>
-          <p className="text-xs font-ui text-ash">
+          <p className="text-xs font-ui text-neu-muted">
             ค้นหาและคัดลอกตัวละครยอดนิยมจากผู้เล่นชั้นนำของ Sword of Justice เพื่อเปรียบเทียบสเตตัส
           </p>
         </div>

@@ -15,7 +15,6 @@ import {
   Globe,
   Lock,
   Calendar,
-  Shield,
 } from "lucide-react";
 
 export default function CharacterDetailPage() {
@@ -98,31 +97,43 @@ export default function CharacterDetailPage() {
   if (isLoading) return <LoadingState message="กำลังโหลดรายละเอียดตัวละคร..." />;
   if (error || !character) return <ErrorState message={error || "ไม่พบข้อมูล"} />;
 
+  // Declared as data so the eight stat tiles share one markup pattern.
+  const statTiles = [
+    { label: "ดาเมจรวม", value: character.attack.toLocaleString() },
+    { label: "โจมตีธาตุทั้งหมด", value: character.elementalAttack.toLocaleString() },
+    { label: "ข่มสำนัก", value: character.schoolCounter.toLocaleString() },
+    { label: "เจาะเกราะ", value: character.armorPenetration.toLocaleString() },
+    { label: "ทำลายโล่", value: character.shieldBreak.toLocaleString() },
+    { label: "ความแม่นยำ", value: character.hit.toLocaleString() },
+    { label: "คริติคอล", value: character.crit.toLocaleString() },
+    { label: "ดาเมจคริติคอล", value: `${character.critDamage}%` },
+  ];
+
+  const isPublic = character.visibility === "PUBLIC";
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
-      {/* Back link */}
+    <div className="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 md:py-12">
+      {/* Masthead */}
       <div>
         <Link
           href="/characters/public"
-          className="inline-flex items-center gap-1.5 text-xs font-ui text-ash hover:text-pure transition-colors mb-4"
+          className="mb-6 inline-flex items-center gap-1.5 rounded-lg text-xs font-ui text-neu-muted transition-colors duration-300 hover:text-neu-accent focus-neu"
         >
           <ArrowLeft size={14} /> กลับไปยังตัวละครสาธารณะ
         </Link>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-steel/40">
+        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
+            <div className="mb-2 flex flex-wrap items-center gap-3">
+              <h1 className="font-display text-3xl font-extrabold tracking-tight text-neu-fg sm:text-4xl">
                 {character.name}
               </h1>
               <span
-                className={`px-2.5 py-0.5 rounded-full text-xs font-mono flex items-center gap-1 ${
-                  character.visibility === "PUBLIC"
-                    ? "bg-cyan-signal/10 text-cyan-signal border border-cyan-signal/20"
-                    : "bg-steel/30 text-ash border border-steel/40"
+                className={`flex items-center gap-1.5 rounded-full bg-neu-base px-3 py-1.5 text-xs font-ui font-medium shadow-neu-inset-sm ${
+                  isPublic ? "text-neu-teal" : "text-neu-muted"
                 }`}
               >
-                {character.visibility === "PUBLIC" ? (
+                {isPublic ? (
                   <>
                     <Globe size={11} /> สาธารณะ
                   </>
@@ -134,105 +145,62 @@ export default function CharacterDetailPage() {
               </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs font-ui text-ash">
-              <span className="flex items-center gap-1">
-                <User size={13} className="text-fog" />
+            <div className="flex flex-wrap items-center gap-4 text-xs font-ui text-neu-muted">
+              <span className="flex items-center gap-1.5">
+                <User size={13} />
                 สร้างโดย {character.user?.username || "ไม่ระบุ"}
               </span>
-              <span className="flex items-center gap-1">
-                <Calendar size={13} className="text-fog" />
+              <span className="flex items-center gap-1.5">
+                <Calendar size={13} />
                 อัปเดตเมื่อ {new Date(character.updatedAt).toLocaleDateString("th-TH")}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex shrink-0 items-center gap-3">
             <Button variant="primary" size="md" onClick={handleUseInCalculator}>
-              <Calculator size={15} className="mr-1.5" />
+              <Calculator size={15} />
               ใช้คำนวณ
             </Button>
             <Button variant="secondary" size="md" onClick={handleDuplicate}>
-              <Copy size={15} className="mr-1.5" />
+              <Copy size={15} />
               คัดลอกบิลด์
             </Button>
           </div>
         </div>
+
+        <div className="mt-6 h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
       </div>
 
-      {/* Description */}
+      {/* Description — recessed, so prose reads as a note set into the surface */}
       {character.description && (
-        <div className="p-6 rounded-card bg-graphite/30 border border-steel/40">
-          <h3 className="text-xs font-mono text-ash uppercase tracking-wider mb-2">
+        <div className="rounded-card bg-neu-base p-6 shadow-neu-inset">
+          <h3 className="mb-3 text-[11px] font-ui font-medium uppercase tracking-widest text-neu-muted">
             คำอธิบายบิลด์
           </h3>
-          <p className="text-sm font-ui text-cloud leading-relaxed">
-            {character.description}
-          </p>
+          <p className="text-sm font-ui leading-relaxed text-neu-fg">{character.description}</p>
         </div>
       )}
 
-      {/* All Stats Grid */}
-      <div className="rounded-card bg-graphite/30 border border-steel/40 p-6 md:p-8">
-        <h3 className="font-display text-xl text-pure font-light mb-6 pb-3 border-b border-steel/30">
+      {/* All stats */}
+      <div className="rounded-card bg-neu-base p-6 shadow-neu-extruded md:p-8">
+        <h3 className="font-display text-xl font-bold tracking-tight text-neu-fg">
           คุณสมบัติและค่าสเตตัส
         </h3>
+        <div className="my-5 h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">ดาเมจรวม</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.attack.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">โจมตีธาตุทั้งหมด</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.elementalAttack.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">ข่มสำนัก</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.schoolCounter.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">เจาะเกราะ</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.armorPenetration.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">ทำลายโล่</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.shieldBreak.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">ความแม่นยำ</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.hit.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">คริติคอล</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.crit.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-input bg-abyss/80 border border-steel/30">
-            <span className="text-fog text-xs font-ui block mb-1">ดาเมจคริติคอล</span>
-            <span className="text-pure font-mono text-xl font-medium">
-              {character.critDamage}%
-            </span>
-          </div>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {statTiles.map((tile) => (
+            <div
+              key={tile.label}
+              className="rounded-well bg-neu-base p-4 shadow-neu-inset transition-all duration-300 ease-out hover:shadow-neu-inset-deep"
+            >
+              <span className="mb-1.5 block text-[11px] font-ui text-neu-muted">{tile.label}</span>
+              <span className="font-numeric text-xl font-bold tracking-tight text-neu-fg">
+                {tile.value}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

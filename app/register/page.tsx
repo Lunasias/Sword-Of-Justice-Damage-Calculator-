@@ -65,24 +65,24 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="flex min-h-[80vh] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <div className="inline-flex p-3 rounded-card bg-graphite border border-steel/60 text-iris mb-4">
-            <Calculator size={28} />
+          <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-[28px] bg-neu-base text-neu-accent shadow-neu-inset-deep">
+            <Calculator size={30} />
           </div>
-          <h1 className="font-display text-2xl sm:text-3xl font-light text-pure">
+          <h1 className="font-display text-2xl font-extrabold tracking-tight text-neu-fg sm:text-3xl">
             สมัครสมาชิก
           </h1>
-          <p className="text-xs sm:text-sm font-ui text-ash mt-1">
+          <p className="mt-2 text-xs font-ui text-neu-muted sm:text-sm">
             สร้างบัญชีเพื่อบันทึกบิลด์ตัวละครและวิเคราะห์ค่าพลัง
           </p>
         </div>
 
-        <div className="rounded-card bg-graphite/30 border border-steel/50 p-6 sm:p-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="rounded-card bg-neu-base p-6 shadow-neu-extruded sm:p-8">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="p-3 rounded-input bg-red-950/30 border border-red-500/30 text-red-400 text-xs font-ui">
+              <div className="rounded-well bg-neu-base p-4 text-xs font-ui text-neu-danger shadow-neu-inset-sm">
                 {error}
               </div>
             )}
@@ -128,17 +128,21 @@ export default function RegisterPage() {
               type="submit"
               variant="primary"
               size="md"
-              className="w-full mt-2"
+              className="mt-2 w-full"
               isLoading={isLoading}
             >
-              <UserPlus size={15} className="mr-1.5" />
+              <UserPlus size={15} />
               สร้างบัญชีใหม่
             </Button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-steel/30 text-center text-xs font-ui text-ash">
+          <div className="mt-8 text-center text-xs font-ui text-neu-muted">
+            <div className="mb-6 h-px bg-neu-shadow-dark/40 shadow-[0_1px_0_rgb(255_255_255/0.6)]" />
             มีบัญชีผู้ใช้อยู่แล้ว?{" "}
-            <Link href="/login" className="text-iris hover:underline font-medium">
+            <Link
+              href="/login"
+              className="rounded-md font-semibold text-neu-accent transition-colors duration-300 hover:text-neu-accent-light focus-neu"
+            >
               เข้าสู่ระบบที่นี่
             </Link>
           </div>

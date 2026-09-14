@@ -5,6 +5,7 @@ import { CharacterCard, CharacterCardData } from "@/components/character/Charact
 import { LoadingState, EmptyState, ErrorState } from "@/components/ui/States";
 import { Search, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default function PublicCharactersPage() {
   const [characters, setCharacters] = useState<CharacterCardData[]>([]);
@@ -51,34 +52,33 @@ export default function PublicCharactersPage() {
   }, [page, debouncedSearch]);
 
   return (
-    <div className="max-w-content mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
-      {/* Header */}
-      <div>
-        <span className="text-xs font-mono text-periwinkle uppercase tracking-wider block mb-1">
-          คลังข้อมูลชุมชน
-        </span>
-        <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-          ตัวละครสาธารณะ
-        </h1>
-        <p className="text-xs sm:text-sm font-ui text-ash mt-1">
-          สำรวจบิลด์ตัวละครที่เผยแพร่โดยผู้เล่นอื่น นำไปใช้คำนวณ หรือคัดลอกมาปรับแต่งต่อ
-        </p>
-      </div>
+    <div className="mx-auto max-w-content space-y-10 px-4 py-8 sm:px-6 md:py-12">
+      <PageHeader
+        eyebrow="คลังข้อมูลชุมชน"
+        title="ตัวละครสาธารณะ"
+        description="สำรวจบิลด์ตัวละครที่เผยแพร่โดยผู้เล่นอื่น นำไปใช้คำนวณ หรือคัดลอกมาปรับแต่งต่อ"
+      />
 
-      {/* Search Bar */}
-      <div className="p-4 rounded-card bg-graphite/20 border border-steel/40 flex items-center justify-between">
+      {/* Search Bar — carved tray with a floating input. */}
+      <div className="flex items-center justify-between gap-4 rounded-card bg-neu-base p-5 shadow-neu-inset">
         <div className="relative w-full max-w-md">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="ค้นหาชื่อตัวละคร คำอธิบาย หรือผู้สร้าง..."
-            className="w-full h-10 pl-10 pr-4 rounded-input bg-abyss/80 text-pure text-xs font-ui border border-steel/60 focus:border-iris focus:outline-none"
+            aria-label="ค้นหาตัวละครสาธารณะ"
+            className="h-12 w-full rounded-2xl bg-neu-base pl-12 pr-4 font-ui text-xs text-neu-fg shadow-neu-inset-deep transition-all duration-300 placeholder:text-neu-placeholder focus-neu-inset"
           />
-          <Search size={16} className="absolute left-3.5 top-3 text-fog" />
+          <Search
+            size={16}
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neu-muted"
+          />
         </div>
-        <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-fog">
-          <Globe size={14} className="text-periwinkle" />
+        <div className="hidden shrink-0 items-center gap-2 text-xs font-ui text-neu-muted sm:flex">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neu-base text-neu-accent-light shadow-neu-inset-deep">
+            <Globe size={15} />
+          </span>
           <span>ข้อมูลเปิดเผยสาธารณะ</span>
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function PublicCharactersPage() {
           }
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
           {characters.map((char) => (
             <CharacterCard key={char.id} character={char} />
           ))}
@@ -107,16 +107,16 @@ export default function PublicCharactersPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-3 pt-6">
+        <div className="flex items-center justify-center gap-4 pt-6">
           <Button
             size="sm"
             variant="secondary"
             disabled={page <= 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
           >
-            <ChevronLeft size={14} className="mr-1" /> ก่อนหน้า
+            <ChevronLeft size={14} /> ก่อนหน้า
           </Button>
-          <span className="text-xs font-mono text-ash">
+          <span className="rounded-full bg-neu-base px-4 py-2 font-numeric text-xs text-neu-muted shadow-neu-inset-sm">
             หน้า {page} จาก {totalPages}
           </span>
           <Button
@@ -125,7 +125,7 @@ export default function PublicCharactersPage() {
             disabled={page >= totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           >
-            ถัดไป <ChevronRight size={14} className="ml-1" />
+            ถัดไป <ChevronRight size={14} />
           </Button>
         </div>
       )}
