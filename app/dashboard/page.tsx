@@ -173,7 +173,7 @@ export default function DashboardPage() {
             สำรวจบิลด์ของชุมชน
           </h3>
           <p className="text-xs font-ui text-ash">
-            ค้นหาและคัดลอกตัวละครยอดนิยมจากผู้เล่นชั้นนำของ 逆水寒手游 เพื่อเปรียบเทียบสเตตัส
+            ค้นหาและคัดลอกตัวละครยอดนิยมจากผู้เล่นชั้นนำของ Sword of Justice เพื่อเปรียบเทียบสเตตัส
           </p>
         </div>
         <Link href="/characters/public">

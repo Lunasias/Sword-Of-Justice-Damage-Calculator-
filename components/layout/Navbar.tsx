@@ -27,21 +27,22 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-steel/40 bg-obsidian/85 backdrop-blur-md transition-all">
+    <header className="sticky top-0 z-40 w-full border-b border-ash/30 bg-[rgba(9,9,9,0.8)] backdrop-blur-[10px] transition-all">
       <div className="max-w-content mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-8">
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-pure font-display text-lg tracking-tight hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2.5 text-almost-white font-ui text-sm font-semibold tracking-tight hover:opacity-90 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-nav bg-graphite border border-steel flex items-center justify-center text-iris">
+            <div className="w-8 h-8 rounded-nav bg-graphite/60 border border-ash/30 flex items-center justify-center text-signal-violet">
               <Calculator size={18} />
             </div>
-            <span className="font-light">
-              逆水寒<span className="text-iris font-normal">ดาเมจ</span>
+            <span>
+              Sword<span className="text-signal-violet"> of Justice</span>
             </span>
           </Link>
+
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1">

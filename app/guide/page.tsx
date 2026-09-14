@@ -28,8 +28,8 @@ export default function GuidePage() {
             เอกสารอ้างอิงและคู่มือ
           </span>
         </div>
-        <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-          คู่มือสูตรคำนวณดาเมจ 逆水寒手游
+        <h1 className="font-display text-3xl sm:text-4xl text-almost-white font-light">
+          คู่มือสูตรคำนวณดาเมจ Sword of Justice
         </h1>
         <p className="text-xs sm:text-sm font-ui text-ash mt-1 leading-relaxed">
           รวบรวมคำศัพท์เกมมาตรฐานภาษาไทย และโครงสร้างสูตรการคำนวณความเสียหายอย่างเป็นระบบ

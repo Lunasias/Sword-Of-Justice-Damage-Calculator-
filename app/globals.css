@@ -1,19 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: 'DM Serif Display', serif;
-  --font-ui: 'Inter', 'Noto Sans Thai', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
+  /* Font CSS vars populated by next/font/google in layout.tsx */
+  --font-noto: 'Noto Sans Thai', system-ui, sans-serif;
+  --font-lora: Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* dope.security design tokens */
+  --color-canvas: #090909;
+  --color-text: #f7f9fa;
+  --color-muted: #828384;
+  --color-border: #6b6b6b;
+  --color-card-border: rgba(247, 249, 250, 0.12);
+  --color-accent: #af50ff;
+  --color-accent-soft: #e1bdff;
 }
 
 body {
-  background-color: #0f1011;
-  color: #f5f5f7;
-  font-family: var(--font-ui);
+  background-color: #090909;
+  color: #f7f9fa;
+  font-family: var(--font-noto), 'Noto Sans Thai', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -26,7 +34,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #090a0b;
+  background: #090909;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -35,7 +43,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f4041;
+  background: #474747;
 }
 
 /* Chrome, Safari, Edge, Opera number input arrows removal for clean data inputs */
@@ -48,3 +56,4 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+

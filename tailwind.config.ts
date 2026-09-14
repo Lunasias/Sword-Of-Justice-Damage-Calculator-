@@ -10,48 +10,64 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        obsidian: "#0f1011",
-        abyss: "#090a0b",
-        graphite: "#2e2e2e",
-        steel: "#3f4041",
-        silver: "#cacaca",
-        pure: "#ffffff",
-        cloud: "#f5f5f7",
-        ash: "#9f9fa0",
-        fog: "#6a6b6b",
+        // dope.security — Midnight terminal with violet beacons
+        "near-black": "#090909",       // page canvas
+        "almost-white": "#f7f9fa",     // primary text
+        "soft-white": "#f0f0f0",       // section labels
+        steel: "#828384",              // muted secondary text
+        graphite: "#474747",           // card text / dividers
+        iron: "#423738",               // dark borders / separators
+        ash: "#6b6b6b",                // nav borders, helper text
+        "signal-violet": "#af50ff",   // THE only chromatic accent
+        "lavender-mist": "#e1bdff",   // soft violet tint
+        // Legacy aliases (kept for components not yet reskinned)
+        obsidian: "#090909",
+        abyss: "#0d0d0d",
+        fog: "#6b6b6b",
+        cloud: "#f0f0f0",
+        pure: "#f7f9fa",
         void: "#000000",
-        // Accents
+        silver: "#828384",
+        ash2: "#6b6b6b",
         iris: {
-          DEFAULT: "#847dff",
-          pale: "#d1c9ff",
-          deep: "#4b49aa",
+          DEFAULT: "#af50ff",
+          pale: "#e1bdff",
+          deep: "#7b2fd6",
         },
         cyan: {
-          signal: "#00b3dd",
+          signal: "#af50ff", // map to violet in new palette
         },
         orchid: {
-          bloom: "#dd90d8",
+          bloom: "#e1bdff",
         },
-        periwinkle: "#90b8f0",
+        periwinkle: "#e1bdff",
       },
       borderRadius: {
         button: "8px",
         input: "8px",
         nav: "8px",
-        card: "16px",
-        feature: "30px",
+        card: "19.2px",
+        feature: "19.2px",
+        pill: "1584px",
       },
       fontFamily: {
-        display: ["var(--font-display)", "Playfair Display", "DM Serif Display", "Georgia", "serif"],
-        ui: ["var(--font-ui)", "Inter", "Prompt", "Noto Sans Thai", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "Roboto Mono", "JetBrains Mono", "monospace"],
+        // Noto Sans Thai — primary for ALL Thai & body text
+        display: ["var(--font-lora)", "Georgia", "serif"],
+        ui: ["var(--font-noto)", "Inter", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
+        // aliases
+        sans: ["var(--font-noto)", "Inter", "system-ui", "sans-serif"],
+        serif: ["var(--font-lora)", "Georgia", "serif"],
       },
       maxWidth: {
         content: "1200px",
       },
       spacing: {
-        section: "80px",
-        card: "32px",
+        section: "120px",
+        card: "40px",
+      },
+      backdropBlur: {
+        nav: "10px",
       },
     },
   },
@@ -59,3 +75,4 @@ const config: Config = {
 };
 
 export default config;
+

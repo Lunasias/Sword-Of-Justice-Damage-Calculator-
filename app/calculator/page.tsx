@@ -182,8 +182,8 @@ export default function CalculatorPage() {
         <span className="text-xs font-mono text-iris uppercase tracking-wider block mb-1">
           ระบบคำนวณดาเมจ
         </span>
-        <h1 className="font-display text-3xl sm:text-4xl text-pure font-light">
-          เครื่องคำนวณดาเมจ 逆水寒手游
+        <h1 className="font-display text-3xl sm:text-4xl text-almost-white font-light">
+          เครื่องคำนวณดาเมจ Sword of Justice
         </h1>
         <p className="text-xs sm:text-sm font-ui text-ash mt-1.5 leading-relaxed">
           ระบุข้อมูลตัวละคร ข้อมูลสกิล และคุณสมบัติของศัตรูเพื่อคำนวณดาเมจที่สร้างได้จริง

@@ -79,7 +79,7 @@ export function CalculationBreakdown({ stages }: CalculationBreakdownProps) {
           <div className="pt-2 text-[11px] font-ui text-fog flex items-center gap-2">
             <Eye size={12} className="text-iris" />
             <span>
-              สูตรคำนวณทั้งหมดได้รับการปรับเทียบตามกลไกดาเมจของ 逆水寒手游 เวอร์ชันล่าสุด
+              สูตรคำนวณทั้งหมดได้รับการปรับเทียบตามกลไกดาเมจของ Sword of Justice เวอร์ชันล่าสุด
             </span>
           </div>
         </div>

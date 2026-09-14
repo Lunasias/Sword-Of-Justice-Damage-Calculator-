@@ -18,19 +18,19 @@ export default function HomePage() {
     <div className="space-y-24 py-12 md:py-20">
       {/* 1. Hero Section (Section 10) */}
       <section className="max-w-content mx-auto px-4 sm:px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-graphite/60 border border-steel/50 text-xs font-mono text-iris mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-graphite/30 border border-ash/30 text-xs font-mono text-signal-violet mb-8">
           <Sparkles size={13} />
-          <span>ระบบคำนวณดาเมจมาตรฐาน 逆水寒手游</span>
+          <span>ระบบคำนวณดาเมจมาตรฐาน Sword of Justice</span>
         </div>
 
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-light text-pure tracking-tight max-w-4xl mx-auto leading-[1.15] mb-6">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-light text-almost-white tracking-tight max-w-4xl mx-auto leading-[1.15] mb-6">
           คำนวณดาเมจของคุณ
           <br />
-          <span className="text-cloud">อย่างแม่นยำ</span>
+          <span className="text-soft-white">อย่างแม่นยำ</span>
         </h1>
 
         <p className="font-ui text-base sm:text-lg text-ash max-w-2xl mx-auto leading-relaxed mb-10">
-          เครื่องคำนวณดาเมจสำหรับ 逆水寒手游
+          เครื่องคำนวณดาเมจสำหรับ Sword of Justice
           พร้อมระบบบันทึกตัวละครและเปรียบเทียบค่าพลัง
           แสดงผลทุกขั้นตอนอย่างโปร่งใสตามกลไกดาเมจจริง
         </p>
