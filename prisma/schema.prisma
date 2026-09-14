@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+model User {
+  id           String      @id @default(cuid())
+  username     String      @unique
+  email        String      @unique
+  passwordHash String
+  avatarUrl    String?
+  bio          String?
+  role         Role        @default(USER)
+  isSuspended  Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  characters   Character[]
+
+  @@index([username])
+  @@index([email])
+}
+
+model Character {
+  id               String     @id @default(cuid())
+  userId           String
+  name             String
+  description      String?
+  visibility       Visibility @default(PRIVATE)
+  attack           Float      @default(0) // ดาเมจรวม
+  elementalAttack  Float      @default(0) // โจมตีธาตุทั้งหมด
+  schoolCounter    Float      @default(0) // ข่มสำนัก
+  armorPenetration Float      @default(0) // เจาะเกราะ
+  shieldBreak      Float      @default(0) // ทำลายโล่
+  hit              Float      @default(0) // ความแม่นยำ
+  crit             Float      @default(0) // คริติคอล
+  critDamage       Float      @default(150.0) // ดาเมจคริติคอล (%)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([visibility])
+  @@index([createdAt])
+}
