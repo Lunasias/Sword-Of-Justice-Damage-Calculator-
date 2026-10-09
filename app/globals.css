@@ -1,201 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300..700;1,300..700&family=Marcellus&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Neumorphism (Soft UI) — design tokens ────────────────────────────────
-   One cool-grey base surface; every edge is defined by opposed shadows
-   (light from top-left, dark falling bottom-right) rather than borders.
-   ──────────────────────────────────────────────────────────────────────── */
 :root {
-  /* Surface + ink */
-  --neu-base: #e0e5ec;
-  --neu-fg: #3d4852;
-  --neu-muted: #6b7280;
-  --neu-placeholder: #a0aec0;
-
-  /* Accents */
-  --neu-accent: #6c63ff;
-  --neu-accent-light: #8b84ff;
-  --neu-accent-deep: #4c46cc;
-  --neu-teal: #38b2ac;
-
-  /* Shadow pigments — kept as raw channels so the alpha recipe lives in one
-     place and shadows always blend with the surface instead of banding. */
-  --neu-shadow-dark: 163 177 198;
-  --neu-shadow-light: 255 255 255;
-
-  /* Font CSS vars — populated by next/font/google in app/layout.tsx */
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-ui: "DM Sans", system-ui, sans-serif;
-  --font-thai: "Noto Sans Thai", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --deco-bg: #0A0A0A;
+  --deco-card: #141414;
+  --deco-fg: #F2F0E4;
+  --deco-gold: #D4AF37;
+  --deco-gold-light: #F2E8C4;
+  --deco-gold-dark: #AA771C;
+  --deco-midnight: #1E3D59;
+  --deco-muted: #888888;
 }
 
 html {
   scroll-behavior: smooth;
+  background-color: #0A0A0A;
+  color: #F2F0E4;
 }
 
 body {
-  background-color: var(--neu-base);
-  color: var(--neu-fg);
-  /* DM Sans first for Latin; Noto Sans Thai carries every Thai glyph. */
-  font-family: var(--font-ui), var(--font-thai), "DM Sans", "Noto Sans Thai", system-ui, sans-serif;
+  background-color: #0A0A0A;
+  color: #F2F0E4;
+  font-family: 'Josefin Sans', 'Noto Sans Thai', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-/* Headings default to the display face with tightened tracking. */
-h1,
-h2,
-h3 {
-  font-family: var(--font-display), var(--font-thai), "Plus Jakarta Sans", "Noto Sans Thai", system-ui, sans-serif;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Marcellus', 'Noto Sans Thai', Georgia, serif;
+  text-transform: uppercase;
 }
 
-/* ─── Shadow physics ──────────────────────────────────────────────────────
-   Semantic depth utilities. Components compose these rather than repeating
-   raw box-shadow values, which keeps the lighting model consistent globally.
-   ──────────────────────────────────────────────────────────────────────── */
-@layer utilities {
-  /* Extruded — default resting state: the element rises from the surface. */
-  .shadow-neu-extruded {
-    box-shadow: 9px 9px 16px rgb(var(--neu-shadow-dark) / 0.6),
-      -9px -9px 16px rgb(var(--neu-shadow-light) / 0.5);
-  }
-
-  /* Extruded Hover — lifted, as if picked up slightly. */
-  .shadow-neu-lifted {
-    box-shadow: 12px 12px 20px rgb(var(--neu-shadow-dark) / 0.7),
-      -12px -12px 20px rgb(var(--neu-shadow-light) / 0.6);
-  }
-
-  /* Extruded Small — for compact elements (chips, icon buttons, tiles). */
-  .shadow-neu-sm {
-    box-shadow: 5px 5px 10px rgb(var(--neu-shadow-dark) / 0.6),
-      -5px -5px 10px rgb(var(--neu-shadow-light) / 0.5);
-  }
-
-  /* Inset — shallow well: pressed states and recessed panels. */
-  .shadow-neu-inset {
-    box-shadow: inset 6px 6px 10px rgb(var(--neu-shadow-dark) / 0.6),
-      inset -6px -6px 10px rgb(var(--neu-shadow-light) / 0.5);
-  }
-
-  /* Inset Deep — carved wells: inputs, icon wells, active surfaces. */
-  .shadow-neu-inset-deep {
-    box-shadow: inset 10px 10px 20px rgb(var(--neu-shadow-dark) / 0.7),
-      inset -10px -10px 20px rgb(var(--neu-shadow-light) / 0.6);
-  }
-
-  /* Inset Small — subtle tracks, dividers, pills. */
-  .shadow-neu-inset-sm {
-    box-shadow: inset 3px 3px 6px rgb(var(--neu-shadow-dark) / 0.6),
-      inset -3px -3px 6px rgb(var(--neu-shadow-light) / 0.5);
-  }
-
-  /* Pressed state for elements sitting on the accent colour: white highlights
-     read as glare on violet, so the shadow is darkened instead. */
-  .shadow-neu-pressed-accent {
-    box-shadow: inset 4px 4px 8px rgb(61 72 82 / 0.35),
-      inset -4px -4px 8px rgb(255 255 255 / 0.18);
-  }
-
-  /* Focus ring token — mandatory on every interactive element. */
-  .focus-neu {
-    outline: none;
-  }
-  .focus-neu:focus-visible {
-    box-shadow: 0 0 0 2px var(--neu-base), 0 0 0 4px var(--neu-accent);
-  }
-
-  /* Input focus: the well must stay carved while the ring appears, so both
-     shadow layers are declared together instead of overriding each other. */
-  .focus-neu-inset {
-    outline: none;
-  }
-  .focus-neu-inset:hover {
-    box-shadow: inset 8px 8px 14px rgb(var(--neu-shadow-dark) / 0.7),
-      inset -8px -8px 14px rgb(var(--neu-shadow-light) / 0.6);
-  }
-  .focus-neu-inset:focus,
-  .focus-neu-inset:focus-visible {
-    box-shadow: inset 10px 10px 20px rgb(var(--neu-shadow-dark) / 0.7),
-      inset -10px -10px 20px rgb(var(--neu-shadow-light) / 0.6), 0 0 0 2px var(--neu-base),
-      0 0 0 4px var(--neu-accent);
-  }
-
-  /* Soft divider: an inset groove instead of a hard border. */
-  .divide-neu {
-    height: 1px;
-    background: rgb(var(--neu-shadow-dark) / 0.35);
-    box-shadow: 0 1px 0 rgb(var(--neu-shadow-light) / 0.5);
-  }
-
-  /* Tabular figures for all damage/matrix numbers. */
-  .font-numeric {
-    font-variant-numeric: tabular-nums;
-  }
+/* ─── 1. Diagonal Crosshatch Background Pattern ─── */
+.bg-art-deco-grid {
+  background-color: #0A0A0A;
+  background-image: 
+    repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.035) 0, rgba(212, 175, 55, 0.035) 1px, transparent 0, transparent 40px),
+    repeating-linear-gradient(-45deg, rgba(212, 175, 55, 0.035) 0, rgba(212, 175, 55, 0.035) 1px, transparent 0, transparent 40px);
 }
 
-/* ─── Scrollbar — recessed into the surface ─────────────────────────────── */
+/* ─── 6. Sunburst Radial Gradients ─── */
+.bg-sunburst {
+  background: radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.18) 0%, rgba(30, 61, 89, 0.08) 45%, transparent 75%);
+}
+
+.bg-sunburst-center {
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, transparent 65%);
+}
+
+/* ─── Gold Text Metallic Gradient ─── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFF5C0 0%, #D4AF37 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Double Border Frame ─── */
+.art-deco-double-frame {
+  position: relative;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  padding: 6px;
+}
+.art-deco-double-frame::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  pointer-events: none;
+}
+
+/* ─── Stepped Corners Decoration (L-Brackets) ─── */
+.art-deco-corner-tl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #D4AF37;
+  border-left: 2px solid #D4AF37;
+  pointer-events: none;
+}
+.art-deco-corner-tr {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #D4AF37;
+  border-right: 2px solid #D4AF37;
+  pointer-events: none;
+}
+.art-deco-corner-bl {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid #D4AF37;
+  border-left: 2px solid #D4AF37;
+  pointer-events: none;
+}
+.art-deco-corner-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid #D4AF37;
+  border-right: 2px solid #D4AF37;
+  pointer-events: none;
+}
+
+/* ─── Underlined Inputs ─── */
+.art-deco-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #D4AF37;
+  color: #F2F0E4;
+  height: 48px;
+  padding: 0 8px;
+  outline: none;
+  font-family: 'Josefin Sans', 'Noto Sans Thai', sans-serif;
+  transition: all 0.3s ease;
+}
+.art-deco-input:focus {
+  border-bottom-color: #F2E8C4;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+/* ─── Custom Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--neu-base);
+  background: #0A0A0A;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--neu-shadow-dark) / 0.65);
-  border-radius: 9999px;
-  border: 2px solid var(--neu-base);
+  background: #2A2A2A;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--neu-shadow-dark) / 0.9);
+  background: #D4AF37;
 }
 
-/* ─── Number input — remove spinners (keys off the inset well instead) ──── */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-/* ─── Select — custom chevron, de-emphasised to sit inside the well ─────── */
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.9rem center;
-  background-size: 1.15em;
-  padding-right: 2.75rem;
-}
-
-/* Native option lists are painted by the OS — align them with the surface. */
-option {
-  background-color: var(--neu-base);
-  color: var(--neu-fg);
-}
-
-/* ─── Respect reduced-motion: keep the depth, drop the movement ─────────── */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Selection */
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: #FFF5C0;
 }

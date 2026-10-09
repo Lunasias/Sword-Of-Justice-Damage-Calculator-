@@ -1,13 +1,11 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Neumorphism (Soft UI) design system — single source of truth.
- *
- * The palette is deliberately monochromatic: depth comes from opposed
- * light/dark shadows, never from colour variety or borders.
- * Shadow recipes live in `app/globals.css` as semantic `shadow-neu-*`
- * utilities so components stay readable instead of carrying huge
- * arbitrary-value strings.
+ * Art Deco (The "Gatsby" Aesthetic) Design System
+ * 
+ * DNA: Opulence, mathematical precision, architectural grandeur.
+ * Colors: Obsidian Black, Champagne Cream, Rich Charcoal, Metallic Gold, Midnight Blue.
+ * Sharp edges, geometric repetition, Roman numerals, stepped corners, gold glows.
  */
 const config: Config = {
   content: [
@@ -19,64 +17,69 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ─── Cool-grey surface ──────────────────────────────────────────
-        // Everything is "moulded" from this one base colour.
-        "neu-base": "#E0E5EC", // page canvas + every card surface
-        "neu-fg": "#3D4852", // primary text — 7.5:1 contrast (WCAG AAA)
-        "neu-muted": "#6B7280", // secondary text — 4.6:1 contrast (WCAG AA)
-        "neu-placeholder": "#A0AEC0", // input placeholders only — never body text
-        "neu-shadow-dark": "#A3B1C6", // dark shadow tone (always applied via rgb())
-
-        // ─── Accents (used sparingly) ───────────────────────────────────
-        "neu-accent": "#6C63FF", // primary interactive violet
-        "neu-accent-light": "#8B84FF", // gradients + hover states
-        "neu-accent-deep": "#4C46CC", // pressed accent
-        "neu-teal": "#38B2AC", // success / positive indicators
-        "neu-danger": "#E5484D", // destructive actions
+        // Art Deco Dark Luxury Palette
+        deco: {
+          bg: "#0A0A0A", // Obsidian Black
+          card: "#141414", // Rich Charcoal
+          cardElevated: "#1A1A1A",
+          fg: "#F2F0E4", // Champagne Cream
+          gold: "#D4AF37", // Metallic Gold
+          "gold-light": "#F2E8C4", // Pale Champagne Gold
+          "gold-dark": "#AA771C", // Deep Antique Gold
+          midnight: "#1E3D59", // Midnight Blue
+          muted: "#888888", // Pewter
+          border: "rgba(212, 175, 55, 0.4)",
+          "border-bright": "#D4AF37",
+        },
       },
       borderRadius: {
-        // Containers are heavily pillowed; nothing is sharp.
-        card: "32px",
-        feature: "32px",
-        button: "16px",
-        input: "16px",
-        well: "20px",
-        nav: "12px",
-        pill: "9999px",
+        // Strictly 0px or 2px max
+        none: "0px",
+        sm: "2px",
+        DEFAULT: "0px",
+        md: "2px",
+        lg: "2px",
       },
       fontFamily: {
-        // Display: Plus Jakarta Sans (Latin headings)
-        display: ["var(--font-display)", "Plus Jakarta Sans", "system-ui", "sans-serif"],
-        // UI: DM Sans (Latin body) with Noto Sans Thai behind it, because
-        // DM Sans ships no Thai glyphs and virtually all copy here is Thai.
-        ui: ["var(--font-ui)", "var(--font-thai)", "DM Sans", "Noto Sans Thai", "system-ui", "sans-serif"],
-        sans: ["var(--font-ui)", "var(--font-thai)", "DM Sans", "Noto Sans Thai", "system-ui", "sans-serif"],
-        // Numeric: tabular figures keep damage columns aligned.
+        marcellus: ["var(--font-marcellus)", "Marcellus", "Italiana", "Georgia", "serif"],
+        display: ["var(--font-marcellus)", "Marcellus", "Italiana", "Georgia", "serif"],
+        josefin: ["var(--font-josefin)", "var(--font-thai)", "Josefin Sans", "Noto Sans Thai", "sans-serif"],
+        body: ["var(--font-josefin)", "var(--font-thai)", "Josefin Sans", "Noto Sans Thai", "sans-serif"],
+        sans: ["var(--font-josefin)", "var(--font-thai)", "Josefin Sans", "Noto Sans Thai", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "monospace"],
       },
+      boxShadow: {
+        "deco-glow": "0 0 15px rgba(212, 175, 55, 0.2)",
+        "deco-glow-hover": "0 0 25px rgba(212, 175, 55, 0.45)",
+        "deco-glow-lg": "0 0 35px rgba(212, 175, 55, 0.6)",
+        "deco-input": "0 4px 10px rgba(212, 175, 55, 0.25)",
+      },
+      letterSpacing: {
+        widest: "0.2em",
+        extrawide: "0.25em",
+        theatrical: "0.3em",
+      },
       maxWidth: {
-        content: "1200px",
+        content: "1320px",
       },
       keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(6px)" },
+        "fade-in-up": {
+          from: { opacity: "0", transform: "translateY(16px)" },
           to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "gold-pulse": {
+          "0%, 100%": { opacity: "0.8", filter: "drop-shadow(0 0 10px rgba(212, 175, 55, 0.3))" },
+          "50%": { opacity: "1", filter: "drop-shadow(0 0 22px rgba(212, 175, 55, 0.65))" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
-        float: "float 3s ease-in-out infinite",
-        "fade-in": "fade-in 300ms ease-out both",
-      },
-      transitionTimingFunction: {
-        out: "cubic-bezier(0, 0, 0.2, 1)",
-      },
-      transitionDuration: {
-        "300": "300ms",
-        "500": "500ms",
+        "fade-in-up": "fade-in-up 0.5s ease-out both",
+        "gold-pulse": "gold-pulse 3s ease-in-out infinite",
+        shimmer: "shimmer 4s linear infinite",
       },
     },
   },
