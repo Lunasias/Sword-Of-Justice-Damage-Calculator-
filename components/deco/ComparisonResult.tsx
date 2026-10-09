@@ -154,14 +154,15 @@ export function ComparisonResult({
     { label: "ดาเมจปกติ (ไม่คริ)", v1: Math.round(result1.normalDamage).toLocaleString(), v2: Math.round(result2.normalDamage).toLocaleString(), unit: "DMG" },
     { label: "โอกาสคริติคอล", v1: `${(result1.critChanceRate * 100).toFixed(2)}%`, v2: `${(result2.critChanceRate * 100).toFixed(2)}%` },
     { label: "อัตราความแม่นยำ", v1: `${(result1.hitRate * 100).toFixed(2)}%`, v2: `${(result2.hitRate * 100).toFixed(2)}%` },
-    { label: "ดาเมจรวม", v1: stats1.attack.toLocaleString(), v2: stats2.attack.toLocaleString() },
-    { label: "โจมตีธาตุทั้งหมด", v1: stats1.elementalAttack.toLocaleString(), v2: stats2.elementalAttack.toLocaleString() },
-    { label: "ข่มสำนัก", v1: stats1.schoolCounter.toLocaleString(), v2: stats2.schoolCounter.toLocaleString() },
+    { label: "โจมตี (กำลังภายใน/ภายนอก)", v1: stats1.attack.toLocaleString(), v2: stats2.attack.toLocaleString() },
     { label: "เจาะเกราะ", v1: stats1.armorPenetration.toLocaleString(), v2: stats2.armorPenetration.toLocaleString() },
-    { label: "ทำลายโล่", v1: stats1.shieldBreak.toLocaleString(), v2: stats2.shieldBreak.toLocaleString() },
+    { label: "โจมตีธาตุ", v1: stats1.elementalAttack.toLocaleString(), v2: stats2.elementalAttack.toLocaleString() },
     { label: "ความแม่นยำ", v1: stats1.hit.toLocaleString(), v2: stats2.hit.toLocaleString() },
     { label: "คริติคอล", v1: stats1.crit.toLocaleString(), v2: stats2.crit.toLocaleString() },
-    { label: "ดาเมจคริติคอล", v1: `${stats1.critDamage}%`, v2: `${stats2.critDamage}%` },
+    { label: "ข่มสำนัก", v1: stats1.schoolCounter.toLocaleString(), v2: stats2.schoolCounter.toLocaleString() },
+    { label: "ข่มบอส", v1: (stats1.bossCounter || 0).toLocaleString(), v2: (stats2.bossCounter || 0).toLocaleString() },
+    { label: "ดาเมจคริติคอล (ตั้งค่าเอง)", v1: `${stats1.critDamage}%`, v2: `${stats2.critDamage}%` },
+    { label: "ทำลายโล่ (ตั้งค่าเอง)", v1: stats1.shieldBreak.toLocaleString(), v2: stats2.shieldBreak.toLocaleString() },
   ];
 
   return (

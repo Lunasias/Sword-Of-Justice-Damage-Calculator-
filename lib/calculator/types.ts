@@ -23,6 +23,8 @@ export interface CharacterStats {
   crit: number;
   /** ดาเมจคริติคอล (Crit Damage Multiplier %, e.g. 182.6 for 182.6%) */
   critDamage: number;
+  /** ข่มบอส (Boss Counter) */
+  bossCounter?: number;
 }
 
 export interface SkillData {

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Upload, Image as ImageIcon, CheckCircle2, Loader2, Sparkles, X, Edit3 } from "lucide-react";
+import { Upload, CheckCircle2, Loader2, Sparkles, X, SlidersHorizontal } from "lucide-react";
 import { CharacterStats } from "@/lib/calculator/types";
 import { recognizeStatsFromImage } from "@/lib/ocr/recognize";
 import { DecoCard } from "./DecoCard";
@@ -35,7 +35,7 @@ export function StatSlot({
   const [scanProgress, setScanProgress] = useState(0);
   const [scanStatus, setScanStatus] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [showEditor, setShowEditor] = useState(true);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleFileProcess = async (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -51,7 +51,7 @@ export function StatSlot({
       // Trigger OCR
       setIsScanning(true);
       setScanProgress(0);
-      setScanStatus("กำลังเริ่มระบบตรวจจับสเตตัส...");
+      setScanStatus("กำลังเริ่มตรวจจับแผงสเตตัสในภาพ...");
 
       try {
         const ocrResult = await recognizeStatsFromImage(src, (progress, status) => {
@@ -59,13 +59,12 @@ export function StatSlot({
           setScanStatus(status);
         });
 
-        // If detected some stats, update them
         if (ocrResult.detectedCount > 0) {
           onStatsChange({
             ...stats,
             ...ocrResult.stats,
           });
-          setScanStatus(`ตรวจพบสเตตัสสำเร็จ (${ocrResult.detectedCount}/8 รายการ)`);
+          setScanStatus(`ตรวจพบสเตตัสสำเร็จ (${ocrResult.detectedCount}/7 ค่าจากหน้าต่างเกม)`);
         } else {
           setScanStatus("ตรวจไม่พบตัวเลขชัดเจน คุณสามารถกรอกสเตตัสได้ทันที");
         }
@@ -94,11 +93,12 @@ export function StatSlot({
       attack: 0,
       elementalAttack: 0,
       schoolCounter: 0,
+      bossCounter: 0,
       armorPenetration: 0,
-      shieldBreak: 0,
+      shieldBreak: 1425,
       hit: 0,
       crit: 0,
-      critDamage: 150,
+      critDamage: 182.6,
     });
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -184,15 +184,14 @@ export function StatSlot({
               อัปโหลดภาพสเตตัสชุดที่ {romanNumeral}
             </h4>
             <p className="text-xs text-[#888888] font-body max-w-xs mb-3">
-              ลากภาพมาวางที่นี่ หรือคลิกเพื่อเลือกภาพหน้าต่างคุณสมบัติในเกม
+              ลากภาพหน้าจอตัวละครมาวางที่นี่ หรือคลิกเพื่อเลือกภาพ (ระบบตรวจจับเฉพาะสเตตัสที่แสดงในหน้าเกม)
             </p>
             <span className="font-marcellus text-[10px] uppercase tracking-widest text-[#D4AF37]/80 border-b border-[#D4AF37]/40 pb-0.5">
-              รองรับ PNG, JPG, WEBP (ระบบ OCR อัตโนมัติ)
+              รองรับภาพแคปเต็มจอ (16:9) หรือภาพตัดเฉพาะส่วน
             </span>
           </div>
         ) : (
           <div className="relative group">
-            {/* Double Frame Wrap for Image */}
             <div className="art-deco-double-frame bg-[#0A0A0A] overflow-hidden">
               <div className="relative max-h-[260px] overflow-hidden flex items-center justify-center bg-[#050505]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -205,7 +204,6 @@ export function StatSlot({
               </div>
             </div>
 
-            {/* Quick action overlay */}
             <div className="absolute top-3 right-3 flex items-center gap-2">
               <button
                 type="button"
@@ -239,91 +237,112 @@ export function StatSlot({
           </div>
         ) : null}
 
-        {/* Editor Accordion Header */}
+        {/* Section Header: Only Stats from this picture */}
         <div className="flex items-center justify-between pt-2 border-t border-[#D4AF37]/20">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rotate-45 bg-[#D4AF37]" />
             <span className="font-marcellus text-xs uppercase tracking-widest text-[#D4AF37]">
-              ค่าสเตตัสที่ได้จากภาพ
+              สเตตัสที่แสดงในภาพเกม (7 ค่าหลัก)
             </span>
-            {hasStats && (
-              <span className="text-[10px] text-[#888888] font-mono">
-                (พร้อมคำนวณ)
-              </span>
-            )}
           </div>
-          <button
-            type="button"
-            onClick={() => setShowEditor(!showEditor)}
-            className="text-xs text-[#888888] hover:text-[#D4AF37] flex items-center gap-1 font-body transition-colors"
-          >
-            <Edit3 size={12} />
-            {showEditor ? "ย่อหน้าต่างสเตตัส" : "เปิดดู/แก้ไขสเตตัส"}
-          </button>
+          {hasStats && (
+            <span className="text-[10px] text-[#888888] font-mono">
+              (พร้อมคำนวณ)
+            </span>
+          )}
         </div>
 
-        {/* Editable Stats Grid */}
-        {showEditor && (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-2">
-            <DecoInput
-              romanNumeral="1"
-              label="ดาเมจรวม"
-              value={stats.attack || ""}
-              onChange={(e) => updateField("attack", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
-            <DecoInput
-              romanNumeral="2"
-              label="โจมตีธาตุทั้งหมด"
-              value={stats.elementalAttack || ""}
-              onChange={(e) => updateField("elementalAttack", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
-            <DecoInput
-              romanNumeral="3"
-              label="ข่มสำนัก"
-              value={stats.schoolCounter || ""}
-              onChange={(e) => updateField("schoolCounter", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
-            <DecoInput
-              romanNumeral="4"
-              label="เจาะเกราะ"
-              value={stats.armorPenetration || ""}
-              onChange={(e) => updateField("armorPenetration", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
-            <DecoInput
-              romanNumeral="5"
-              label="ทำลายโล่"
-              value={stats.shieldBreak || ""}
-              onChange={(e) => updateField("shieldBreak", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
-            <DecoInput
-              romanNumeral="6"
-              label="ความแม่นยำ"
-              value={stats.hit || ""}
-              onChange={(e) => updateField("hit", parseFloat(e.target.value) || 0)}
-              placeholder="0"
-            />
+        {/* 7 Stats from this game screen */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
+          <DecoInput
+            romanNumeral="1"
+            label="โจมตี (กำลังภายใน/ภายนอก)"
+            value={stats.attack || ""}
+            onChange={(e) => updateField("attack", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <DecoInput
+            romanNumeral="2"
+            label="เจาะเกราะ"
+            value={stats.armorPenetration || ""}
+            onChange={(e) => updateField("armorPenetration", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <DecoInput
+            romanNumeral="3"
+            label="โจมตีธาตุ"
+            value={stats.elementalAttack || ""}
+            onChange={(e) => updateField("elementalAttack", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <DecoInput
+            romanNumeral="4"
+            label="ความแม่นยำ"
+            value={stats.hit || ""}
+            onChange={(e) => updateField("hit", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <DecoInput
+            romanNumeral="5"
+            label="คริติคอล"
+            value={stats.crit || ""}
+            onChange={(e) => updateField("crit", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <DecoInput
+            romanNumeral="6"
+            label="ข่มสำนัก"
+            value={stats.schoolCounter || ""}
+            onChange={(e) => updateField("schoolCounter", parseFloat(e.target.value) || 0)}
+            placeholder="0"
+          />
+          <div className="col-span-2 sm:col-span-1">
             <DecoInput
               romanNumeral="7"
-              label="คริติคอล"
-              value={stats.crit || ""}
-              onChange={(e) => updateField("crit", parseFloat(e.target.value) || 0)}
+              label="ข่มบอส"
+              value={stats.bossCounter || ""}
+              onChange={(e) => updateField("bossCounter", parseFloat(e.target.value) || 0)}
               placeholder="0"
             />
-            <DecoInput
-              romanNumeral="8"
-              label="ดาเมจคริติคอล"
-              unit="%"
-              value={stats.critDamage || ""}
-              onChange={(e) => updateField("critDamage", parseFloat(e.target.value) || 0)}
-              placeholder="150"
-            />
           </div>
-        )}
+        </div>
+
+        {/* Customizable Remaining Stats: "ที่เหลือ ตั้งเป็นแบบสามารถตั้งเองได้" */}
+        <div className="pt-3 border-t border-[#D4AF37]/15">
+          <button
+            type="button"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="w-full flex items-center justify-between p-2 bg-[#0E0E0E] hover:bg-[#181818] border border-[#D4AF37]/30 text-left transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal size={13} className="text-[#D4AF37]" />
+              <span className="font-marcellus text-[11px] uppercase tracking-widest text-[#D4AF37]">
+                สเตตัสเพิ่มเติมที่ไม่ได้แสดงในภาพ (ตั้งค่าเองได้)
+              </span>
+            </div>
+            <span className="text-[10px] text-[#888888] font-mono">
+              {showAdvanced ? "▲ ปิด" : "▼ เปิดแก้ไข (คริแรง & ทำลายโล่)"}
+            </span>
+          </button>
+
+          {showAdvanced && (
+            <div className="mt-2 p-3 bg-[#0A0A0A] border border-[#D4AF37]/25 grid grid-cols-2 gap-3 animate-fade-in-up">
+              <DecoInput
+                label="ดาเมจคริติคอล"
+                unit="%"
+                value={stats.critDamage || ""}
+                onChange={(e) => updateField("critDamage", parseFloat(e.target.value) || 0)}
+                placeholder="182.6"
+              />
+              <DecoInput
+                label="ทำลายโล่"
+                value={stats.shieldBreak || ""}
+                onChange={(e) => updateField("shieldBreak", parseFloat(e.target.value) || 0)}
+                placeholder="1425"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </DecoCard>
   );

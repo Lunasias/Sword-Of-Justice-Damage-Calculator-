@@ -32,36 +32,39 @@ const DEFAULT_SKILL: SkillData = {
 
 // Realistic sample presets for testing
 const SAMPLE_BUILD_1: CharacterStats = {
-  attack: 8185,
-  elementalAttack: 2850,
-  schoolCounter: 750,
-  armorPenetration: 3850,
-  shieldBreak: 1520,
-  hit: 1350,
-  crit: 1650,
-  critDamage: 185.0,
+  attack: 9361,
+  elementalAttack: 2155,
+  schoolCounter: 749,
+  bossCounter: 553,
+  armorPenetration: 3090,
+  shieldBreak: 1425,
+  hit: 1528,
+  crit: 1887,
+  critDamage: 182.6,
 };
 
 const SAMPLE_BUILD_2: CharacterStats = {
-  attack: 9250,
-  elementalAttack: 1850,
-  schoolCounter: 700,
-  armorPenetration: 2750,
-  shieldBreak: 1380,
-  hit: 1280,
-  crit: 1920,
-  critDamage: 195.0,
+  attack: 8850,
+  elementalAttack: 2650,
+  schoolCounter: 780,
+  bossCounter: 600,
+  armorPenetration: 3750,
+  shieldBreak: 1500,
+  hit: 1580,
+  crit: 1780,
+  critDamage: 188.0,
 };
 
 const EMPTY_STATS: CharacterStats = {
   attack: 0,
   elementalAttack: 0,
   schoolCounter: 0,
+  bossCounter: 0,
   armorPenetration: 0,
-  shieldBreak: 0,
+  shieldBreak: 1425,
   hit: 0,
   crit: 0,
-  critDamage: 150,
+  critDamage: 182.6,
 };
 
 export default function StatComparisonPage() {

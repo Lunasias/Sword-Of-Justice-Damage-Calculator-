@@ -188,7 +188,8 @@ export function calculateTotalDamage(
 
   // 2. ดาเมจรวมเริ่มต้น
   const panelAttack = getPanelAttack(character);
-  const initialDamagePool = skillAttack + panelAttack + character.schoolCounter;
+  const totalCounter = character.schoolCounter + (character.bossCounter || 0);
+  const initialDamagePool = skillAttack + panelAttack + totalCounter;
 
   // 3. การลดจากโล่พลังชี่
   const { effectiveReduction: effectiveShieldReduction, remainingShield } =
